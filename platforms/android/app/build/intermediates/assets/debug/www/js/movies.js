@@ -35,6 +35,7 @@ var Movies = function(){
         $.getJSON('https://api.themoviedb.org/3/discover/movie?api_key=' + omdbKey + '&' + filter + '&include_adult=false&include_video=false&page=' + tellerPagina, function(data) {
             var results = data["results"];
             var teller = 0;
+            console.log(results);
             //door alle resultaten loopen
             $.each(results, function(){
                 //gegevens opvragen
@@ -104,6 +105,7 @@ var Movies = function(){
     //bepaalde film ophalen
     var getMovie = function(movieId){
         var selectorOverview = $('#detailOverview');
+        var selectorProduction = $('#productionCollectionItem');
         //data ophalen
         $.getJSON('https://api.themoviedb.org/3/movie/' + movieId + '?api_key=' + omdbKey, function(data){
             //gegevens opvragen
@@ -114,6 +116,10 @@ var Movies = function(){
             var maand = maandNaam(date.getMonth());
             var releaseDate = date.getDate() + " " + maand + " " + date.getFullYear();
             var rating = data['vote_average'];
+            var production = data['production_companies'];
+            var genres = data['genres'];
+            var teller = 0; //om door de productie en genres te lopen
+            var id = data['id'];
 
             //basis gegevens
             selectorOverview.find('.titel').text(title);
@@ -121,6 +127,118 @@ var Movies = function(){
             selectorOverview.find('.card-reveal').find('p').text(overview);
             selectorOverview.find('.card-content').find('p:first').text(releaseDate);
             selectorOverview.find('.card-content').find('p:last').find('span').text(rating);
+            $('#tabMovieDetail').attr('data-id', id);
+
+            //productie weergeven
+            $.each(production, function(){
+                //gegevens opvragen
+                var name = production[teller]['name'];
+                var id = production[teller]['id'];
+
+                //niet het eerste element --> eerste element klonen
+                if(teller !== 0){
+                    //element clonen
+                    var clone = selectorProduction.clone(true).prop('id', 'productionCollectionItem' + teller);
+                    clone.appendTo('#productionCollection');
+
+                    //selector aanpassen
+                    selectorProduction = $('#productionCollectionItem' + teller);
+                }
+
+                //element opvullen
+                selectorProduction.text(name);
+                selectorProduction.attr('data-id', id);
+
+                teller++;
+            });
+
+            //teller resetten, p element met genres leegmaken
+            teller = 0;
+            selectorOverview.find('.card-content').find('p:nth-child(2)').text("");
+
+            //laatste genre bepalen
+            var length = genres.length;
+
+            //genres weergeven
+            $.each(genres, function(){
+                var uitvoer;
+                //achter het laatste genre geen komma
+                if(teller === (length - 1)){
+                    uitvoer = genres[teller]['name'];
+                }else{
+                    uitvoer = genres[teller]['name'] + ", ";
+                }
+                selectorOverview.find('.card-content').find('p:nth-child(2)').append(uitvoer);
+                teller++;
+            });
+        });
+    };
+
+    //personen in de film ophalen
+    var getPeople = function(movieId){
+        var selectorActor = $('#actorCollectionItem');
+        var selectorCrew = $('#crewCollectionItem0');
+        //data ophalen
+        $.getJSON('https://api.themoviedb.org/3/movie/' + movieId + '/credits' + '?api_key=' + omdbKey, function(data){
+            var cast = data['cast'];
+            var crew = data['crew'];
+            var teller = 0; //om door de lijst met crewmembers te lopen
+            var tellerWeergave = 0; //om bij te houden hoeveel crewmembers we al weergeven
+
+            //we laten 5 acteurs en 5 crewmembers zien
+            for (i = 0; i < 5; i++) {
+                //gegevens opvragen
+                var character = cast[i]['character'];
+                var name = cast[i]['name'];
+                var id = cast[i]['id'];
+
+                //niet het eerste element --> eerste element klonen
+                if (i !== 0){
+                    //element clonen
+                    var cloneActor = selectorActor.clone(true).prop('id', 'actorCollectionItem' + id);
+                    cloneActor.appendTo('#actorCollection');
+
+                    //selector aanpassen
+                    selectorActor = $('#actorCollectionItem' + id);
+                }
+
+                //element opvullen
+                selectorActor.text(name + ' as ' + character);
+                selectorActor.attr('data-id', id);
+            }
+
+            //door de lijst met alle crewmembers lopen
+            $.each(crew, function () {
+                //gegevens opvragen
+                var job = crew[teller]['job'];
+                var department = crew[teller]['department'];
+                var name = crew[teller]['name'];
+                var id = crew[teller]['id'];
+                var selectorHuidig;
+
+                //we geven max. 5 crew weer
+                if(tellerWeergave < 5) {
+                    //De director(s) en een onbepaald aantal schrijvers of producers weergeven
+                    switch(department){
+                        case "Directing":
+                        case "Writing":
+                        case "Production":
+                            if(tellerWeergave !== 0){
+                                //element clonen
+                                var cloneCrew = selectorCrew.clone(true).prop('id', 'crewCollectionItem' + tellerWeergave);
+                                cloneCrew.appendTo('#crewCollection');
+                            }
+                            selectorHuidig = $('#crewCollectionItem' + tellerWeergave);
+                            //element opvullen
+                            selectorHuidig.text(job + ': ' + name);
+                            selectorHuidig.attr('data-id', id);
+                            tellerWeergave++;
+                            break;
+                    }
+                }
+
+                teller++;
+            });
         });
     };
 
@@ -147,6 +265,7 @@ var Movies = function(){
         getDiscoverMovies : getDiscoverMovies,
         getGenres : getGenres,
         getMovie : getMovie,
+        getPeople: getPeople,
         omdbKey : omdbKey
     }
 }();

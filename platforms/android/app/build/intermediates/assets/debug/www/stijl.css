@@ -1,5 +1,7 @@
+/*tabs die niet actief zijn zijn ook niet zichtbaar*/
 .spa { display: none; }
 
+/*icons*/
 .fa{
     font-size: 200%;
     padding: 2%;
@@ -15,21 +17,28 @@
     text-shadow: 1px 1px black;
 }
 
-.row{
-    margin: 5%;
-}
-
-.btn{
-    margin: 2%;
-}
-
-.poster{
-    border-radius: 0%;
-    height: auto !important;
-}
-
 .inline-icon {
     vertical-align: bottom;
     font-size: 20px !important;
     text-shadow: 1px 1px 1px 1px #000000;
+}
+
+/*rijen*/
+.row{
+    margin: 5%;
+}
+
+/*buttons*/
+.btn{
+    margin: 2%;
+}
+
+.btn-large{
+    margin: 2%;
+}
+
+/*poster*/
+.poster{
+    border-radius: 0%;
+    height: auto !important;
 }

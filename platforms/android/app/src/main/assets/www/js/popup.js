@@ -1,29 +1,35 @@
 var Popup = function(){
-    var _callback = function(buttonIndex) {
-        setTimeout(function() {
-            // like other Cordova plugins (prompt, confirm) the buttonIndex is 1-based (first button is index 1)
-            alert('button index clicked: ' + buttonIndex);
+    var movie = 0;
+
+    //wat er gebeurt nadat op de knop geklikt is
+    var callback = function(buttonIndex){
+        setTimeout(function(){
+            Lists.setListItem(buttonIndex-1, movie);
+            console.log(Lists.getLists());
+            console.log(Lists.getListItem());
+            console.log(buttonIndex);
         });
     };
 
-    var testShareSheet = function () {
+    //Popup die vraagt in welke lijst je de film wilt toevoegen
+    var addMoviePopup = function (movieId) {
         var options = {
             androidTheme: window.plugins.actionsheet.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT, // default is THEME_TRADITIONAL
-            title: 'What do you want with this image?',
-            buttonLabels: ['Share via Facebook', 'Share via Twitter'],
+            title: 'Choose a list:',
+            buttonLabels: Lists.getLists(),
             androidEnableCancelButton : true, // default false
             winphoneEnableCancelButton : true, // default false
             addCancelButtonWithLabel: 'Cancel',
-            addDestructiveButtonWithLabel : 'Delete it',
             position: [20, 40], // for iPad pass in the [x, y] position of the popover
             destructiveButtonLast: true // you can choose where the destructive button is shown
         };
         // Depending on the buttonIndex, you can now call shareViaFacebook or shareViaTwitter
         // of the SocialSharing plugin (https://github.com/Eddy
-        window.plugins.actionsheet.show(options, _callback);
+        movie = movieId;
+        window.plugins.actionsheet.show(options, callback);
     };
 
     return{
-        testShareSheet : testShareSheet,
+        addMoviePopup : addMoviePopup
     }
 }();

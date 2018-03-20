@@ -69,7 +69,7 @@
         <a href="#!" class="waves-effect waves-light btn col s10 offset-s1 buttonMovieList" data-show="tabMovieList" data-name="new">New movies</a>
         <a href="#!" class="waves-effect waves-light btn col s10 offset-s1 buttonMovieList" data-show="tabMovieList" data-name="popular">Popular movies</a>
         <a href="#!" class="waves-effect waves-light btn col s10 offset-s1 buttonGenre" data-show="tabGenreList">By Genre</a>
-        <a href="#!" class="waves-effect waves-light btn col s10 offset-s1" data-show="">Advanced search</a>
+        <!-- <a href="#!" class="waves-effect waves-light btn col s10 offset-s1" data-show="">Advanced search</a> -->
     </div>
 
     <!-- Tab met lijst van filmen -->
@@ -90,7 +90,7 @@
     </div>
 
     <!-- Tab met details over een bepaalde film -->
-    <div class="row spa" id="tabMovieDetail">
+    <div class="row spa" id="tabMovieDetail" data-id="">
         <!-- Titel en algemene info -->
         <div class="card" id="detailOverview">
             <div class="card-image waves-effect waves-block waves-light">
@@ -136,21 +136,24 @@
             </div>
         </div>
 
-        <a class="waves-effect waves-light btn-large col s5 offset-s1"><i class="material-icons left">cloud</i>add</a>
-        <a class="waves-effect waves-light btn-large col s5"><i class="material-icons left">cloud</i>delete</a>
+        <a class="waves-effect waves-light btn-large col s6 offset-s3" id="buttonAddToList"><i class="material-icons left">playlist_add</i>Add to list</a>
     </div>
+</div>
 
-    <!-- Preloader, werkt nog niet!
-    <div class="preloader-wrapper big active" id="tabLoader">
-        <div class="spinner-layer spinner-blue">
-            <div class="circle-clipper left">
-                <div class="circle"></div>
-            </div><div class="gap-patch">
-            <div class="circle"></div>
-        </div><div class="circle-clipper right">
+<!-- Preloader, werkt nog niet!-->
+<div class="preloader-wrapper big active col s12 m6 offset-m3" id="tabLoader">
+    <div class="spinner-layer spinner-blue">
+        <div class="circle-clipper left">
             <div class="circle"></div>
         </div>
-        </div> -->
+        <div class="gap-patch">
+            <div class="circle">
+            </div>
+        </div>
+        <div class="circle-clipper right">
+            <div class="circle"></div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -159,5 +162,6 @@
 <script defer src="js/app.js"></script>
 <script defer src="js/movies.js"></script>
 <script defer src="js/popup.js"></script>
+<script defer src="js/lists.js"></script>
 </body>
 </html>

@@ -119,6 +119,7 @@ var Movies = function(){
             var production = data['production_companies'];
             var genres = data['genres'];
             var teller = 0; //om door de productie en genres te lopen
+            var id = data['id'];
 
             //basis gegevens
             selectorOverview.find('.titel').text(title);
@@ -126,6 +127,7 @@ var Movies = function(){
             selectorOverview.find('.card-reveal').find('p').text(overview);
             selectorOverview.find('.card-content').find('p:first').text(releaseDate);
             selectorOverview.find('.card-content').find('p:last').find('span').text(rating);
+            $('#tabMovieDetail').attr('data-id', id);
 
             //productie weergeven
             $.each(production, function(){
