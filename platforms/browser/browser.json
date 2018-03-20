@@ -1,0 +1,40 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "be.wim.moviehut"
+    },
+    "cordova-plugin-actionsheet": {
+      "PACKAGE_NAME": "be.wim.moviehut"
+    }
+  },
+  "dependent_plugins": {},
+  "modules": [
+    {
+      "file": "plugins/cordova-plugin-actionsheet/www/ActionSheet.js",
+      "id": "cordova-plugin-actionsheet.ActionSheet",
+      "pluginId": "cordova-plugin-actionsheet",
+      "clobbers": [
+        "window.plugins.actionsheet"
+      ]
+    },
+    {
+      "file": "plugins/cordova-plugin-actionsheet/src/browser/ActionSheetProxy.js",
+      "id": "cordova-plugin-actionsheet.ActionSheetProxy",
+      "pluginId": "cordova-plugin-actionsheet",
+      "merges": [
+        ""
+      ]
+    }
+  ],
+  "plugin_metadata": {
+    "cordova-plugin-whitelist": "1.3.3",
+    "cordova-plugin-actionsheet": "2.3.3"
+  }
+}

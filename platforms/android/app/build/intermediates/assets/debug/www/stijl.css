@@ -1,0 +1,35 @@
+.spa { display: none; }
+
+.fa{
+    font-size: 200%;
+    padding: 2%;
+}
+
+.fa-linkedin{
+    color: #1dcaff;
+    text-shadow: 1px 1px black;
+}
+
+.fa-twitter-square{
+    color: #00aced;
+    text-shadow: 1px 1px black;
+}
+
+.row{
+    margin: 5%;
+}
+
+.btn{
+    margin: 2%;
+}
+
+.poster{
+    border-radius: 0%;
+    height: auto !important;
+}
+
+.inline-icon {
+    vertical-align: bottom;
+    font-size: 20px !important;
+    text-shadow: 1px 1px 1px 1px #000000;
+}
