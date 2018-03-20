@@ -49,6 +49,7 @@ $(function(){
              tellers = tellersString.split(" ");
         }
 
+        //veranderen van tab
         veranderVanTab($(this));
         console.log(tellers[0]);
         console.log(tellers[1]);
@@ -61,8 +62,19 @@ $(function(){
 
     //film pagina
     $('.buttonMovieDetail').click(function(){
+        //movie id opvragen
         var movie = $(this).prop('id');
+
+        //lijsten leeg maken
+        $('#actorCollection').find('a').not(':first').remove();
+        $('#crewCollection').find('a').not(':first').remove();
+        $('#movieCollection').find('a').not(':first').remove();
+
+        //gegevens weergeven
         Movies.getMovie(movie);
+        Movies.getPeople(movie);
+
+        //veranderen van tab
         veranderVanTab($(this));
     });
 });
