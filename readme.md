@@ -1,4 +1,4 @@
-![Logo](https://3.bp.blogspot.com/-TGeEK2qJmw0/WrKqEpqzeUI/AAAAAAAAGf4/NKnURQ8ACCYWpMSOZZ_uCyrqbjjKxay_gCLcBGAs/s1600/movie2.png)
+![Logo](https://1.bp.blogspot.com/-R3ccurfvvTg/WrKrwuwwg7I/AAAAAAAAGgE/xRepETSLzVwlsauv_PIIol_obfyGqE41gCLcBGAs/s1600/movieSmall.png)
 
 # MovieHut
 
