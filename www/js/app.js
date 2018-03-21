@@ -15,19 +15,15 @@ $(function(){
         $('.button-collapse').sideNav('hide');
     }
 
-    function showMovie(movieId){
-        //lijsten leeg maken
-        $('#actorCollection').find('a').not(':first').remove();
-        $('#crewCollection').find('a').not(':first').remove();
-        $('#movieCollection').find('a').not(':first').remove();
-
-        //gegevens weergeven
-        Movies.getMovie(movieId);
-        Movies.getPeople(movieId);
-    }
-
     //naar de gekozen tab gaan
     $('.side-nav a').click(function(){
+        //als we op de navigatie knop voor lijsten klikken, moeten we een functie oproepen
+        if($(this).attr('id', 'navLists')){
+            $('#listsCollection').find('a').not(':first').remove();
+            Lists.showLists();
+        }
+
+        //van tab veranderen
         changeTab($(this));
     });
 
@@ -84,11 +80,39 @@ $(function(){
         changeTab($(this));
     });
 
+    //bepaalde film laten zien
+    function showMovie(movieId){
+        //lijsten leeg maken
+        $('#actorCollection').find('a').not(':first').remove();
+        $('#crewCollection').find('a').not(':first').remove();
+        $('#movieCollection').find('a').not(':first').remove();
+
+        //gegevens weergeven
+        Movies.getMovie(movieId);
+        Movies.getPeople(movieId);
+    }
+
     //knop om film toe the voegen aan een lijst
     $('#buttonAddToList').click(function(){
         var movie = $('#tabMovieDetail').attr('data-id');
         Popup.addMoviePopup(movie);
         Lists.setLocalStorage();
+    });
+
+    //lijst met specifieke filmen ophalen
+    $('.buttonSpecificMovieList').click(function(){
+        //movielijst leeg maken
+        $('#collectionMovies').find('li').not(':first').remove();
+
+        //filmlijst maken
+        var id = $(this).attr('data-id');
+        var controle = Movies.getMovieList(parseInt(id));
+
+        //als de lijst leeg is veranderen we niet van tab
+        if(controle !== "fout"){
+            //veranderen van tab
+            changeTab($(this));
+        }
     });
 
     //Preloader laten zien wanneer we gegevens uit onze api laden -- werkt nog niet!

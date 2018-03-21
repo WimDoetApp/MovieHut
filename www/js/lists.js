@@ -3,7 +3,7 @@ var Lists = function(){
     var listItems = [];
     var lists = [];
 
-    //de variabelen in andere functies gebruiken
+    //de variabelen in andere functies gebruiken (getters en setters)
     var getLists = function(){
         return lists;
     };
@@ -14,6 +14,27 @@ var Lists = function(){
 
     var getListItems = function(){
         return listItems;
+    };
+
+    var getSpecificListItems = function(listId){
+        var movieIds = []; //de ids van de films in de lijst
+
+        console.log(listItems);
+        //door de 2-dimensionale array lopen met een dubbele loop
+        $.each(listItems, function(index, element){
+            console.log(element[1]);
+            if(element[0] === listId){
+                movieIds.push(element[1])
+            }
+        });
+
+        //returnvalues
+        if(movieIds.length === 0){
+            movieIds = "error";
+        }
+
+        console.log(movieIds);
+        return movieIds;
     };
 
     var setListItems = function(listId, movieId){
@@ -45,13 +66,35 @@ var Lists = function(){
         localStorage.setItem('listItem', JSON.stringify(listItems));
     };
 
+    //lists weergeven
+    var showLists = function(){
+        var selector = $('#listsCollectionItem0');
+
+        $.each(lists, function(index) {
+            if(index !== 0){
+                //element clonen
+                var clone = selector.clone(true).prop('id', 'listsCollectionItem' + index);
+                clone.appendTo('#listsCollection');
+
+                //selector aanpassen
+                selector = $('#listsCollectionItem' + index);
+            }
+
+            //element opvullen
+            selector.text(lists[index]);
+            selector.attr('data-id', index);
+        });
+    };
+
     return{
         getLists : getLists,
         setLists : setLists,
         getListItem : getListItems,
+        getSpecificListItems : getSpecificListItems,
         setListItem : setListItems,
         init : init,
         setLocalStorage : setLocalStorage,
+        showLists : showLists,
         lists : lists
     }
 }();

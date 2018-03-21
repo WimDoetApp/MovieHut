@@ -14,21 +14,25 @@
 <div class="navbar-fixed">
     <nav class="#8c9eff blue-grey accent-1">
         <div class="nav-wrapper">
-            <a href="#!" class="brand-logo">MovieHut</a>
+            <a href="#!" class="brand-logo"><i>MovieHut</i></a>
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <img src="images/movie.svg" id="header" class="right" alt="logo"/>
         </div>
     </nav>
 </div>
 
 <!-- Sidenav -->
 <ul class="side-nav blue-grey lighten-5" id="mobile-demo">
+    <li class="center-align" id="navLogo"><img src="images/movie.svg" alt="logo"/></li>
     <li><a href="#!" data-show="tabHome"><i class="material-icons">home</i>Home</a></li>
-    <li class="divider blue-grey lighten-4"></li>
-    <li><a href="#!" data-show="tabInfo"><i class="material-icons">info_outline</i>Info</a></li>
     <li class="divider blue-grey lighten-4"></li>
     <li><a href="#!" data-show="tabMovies"><i class="material-icons">movie</i>Movies</a></li>
     <li class="divider blue-grey lighten-4"></li>
-    <li><a href="#!" data-show="tabDevice"><i class="material-icons">arrow_back</i>Back</a></li>
+    <li><a href="#!" data-show="tabLists" id="navLists"><i class="material-icons">list</i>Lists</a></li>
+    <li class="divider blue-grey lighten-4"></li>
+    <li><a href="#!" data-show="tabInfo"><i class="material-icons">info_outline</i>Info</a></li>
+    <li class="divider blue-grey lighten-4"></li>
+    <li><a href="#!" data-show="tabBack"><i class="material-icons">arrow_back</i>Back</a></li>
 </ul>
 
 <!-- container -->
@@ -137,6 +141,14 @@
         </div>
 
         <a class="waves-effect waves-light btn-large col s6 offset-s3" id="buttonAddToList"><i class="material-icons left">playlist_add</i>Add to list</a>
+    </div>
+
+    <!-- Tab met overzicht van lijsten -->
+    <div class="row spa" id="tabLists">
+        <h3>Lists</h3>
+        <div class="collection" id="listsCollection">
+            <a href="#!" class="collection-item buttonSpecificMovieList" id="listsCollectionItem0" data-id="" data-show="tabMovieList"></a>
+        </div>
     </div>
 </div>
 

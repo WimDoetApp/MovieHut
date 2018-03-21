@@ -34,19 +34,18 @@ var Movies = function(){
         //data ophalen
         $.getJSON('https://api.themoviedb.org/3/discover/movie?api_key=' + omdbKey + '&' + filter + '&include_adult=false&include_video=false&page=' + tellerPagina, function(data) {
             var results = data["results"];
-            var teller = 0;
             console.log(results);
             //door alle resultaten loopen
-            $.each(results, function(){
+            $.each(results, function(index){
                 //gegevens opvragen
-                var id = results[teller]['id'];
-                var titel = results[teller]['title'];
-                var jaar = results[teller]['release_date'].split('-')[0];
-                var rating = results[teller]['vote_average'];
-                var image = "http://image.tmdb.org/t/p/w92/" + results[teller]['poster_path'];
+                var id = results[index]['id'];
+                var titel = results[index]['title'];
+                var jaar = results[index]['release_date'].split('-')[0];
+                var rating = results[index]['vote_average'];
+                var image = "http://image.tmdb.org/t/p/w92/" + results[index]['poster_path'];
 
                 if(criteria === "upcoming"){
-                    var date = new Date(results[teller]['release_date']);
+                    var date = new Date(results[index]['release_date']);
                     console.log(date);
                     var maand = maandNaam(date.getMonth());
                     rating = date.getDate() + " " + maand;
@@ -68,9 +67,6 @@ var Movies = function(){
                 selector.find('img').attr('src', image);
                 selector.find('p').html(jaar + "<br>" + rating);
                 selector.find('a').prop('id', id);
-
-                //teller verhogen
-                teller++;
             });
         });
 
@@ -82,22 +78,20 @@ var Movies = function(){
         //data ophalen
         $.getJSON('https://api.themoviedb.org/3/genre/movie/list?api_key=' + omdbKey, function(data){
             var results = data["genres"];
-            var teller = 0;
             //door de genres loopen
-            $.each(results, function (){
-                var id = results[teller]["id"];
-                if(teller === 0){
+            $.each(results, function (index){
+                var id = results[index]["id"];
+                if(index === 0){
                     //element vullen
-                    $('#genreButton').text(results[teller]["name"]).attr('data-id', id);
+                    $('#genreButton').text(results[index]["name"]).attr('data-id', id);
                 }else{
                     //element clonen
                     var clone = $('#genreButton').clone(true).prop('id', 'genreButton' + id);
                     clone.appendTo('#tabGenreList');
 
                     //element vullen
-                    $('#genreButton' + id).text(results[teller]['name']).attr('data-id', id);
+                    $('#genreButton' + id).text(results[index]['name']).attr('data-id', id);
                 }
-                teller++;
             });
         });
     };
@@ -118,7 +112,6 @@ var Movies = function(){
             var rating = data['vote_average'];
             var production = data['production_companies'];
             var genres = data['genres'];
-            var teller = 0; //om door de productie en genres te lopen
             var id = data['id'];
 
             //basis gegevens
@@ -130,46 +123,42 @@ var Movies = function(){
             $('#tabMovieDetail').attr('data-id', id);
 
             //productie weergeven
-            $.each(production, function(){
+            $.each(production, function(index){
                 //gegevens opvragen
-                var name = production[teller]['name'];
-                var id = production[teller]['id'];
+                var name = production[index]['name'];
+                var id = production[index]['id'];
 
                 //niet het eerste element --> eerste element klonen
-                if(teller !== 0){
+                if(index !== 0){
                     //element clonen
-                    var clone = selectorProduction.clone(true).prop('id', 'productionCollectionItem' + teller);
+                    var clone = selectorProduction.clone(true).prop('id', 'productionCollectionItem' + index);
                     clone.appendTo('#productionCollection');
 
                     //selector aanpassen
-                    selectorProduction = $('#productionCollectionItem' + teller);
+                    selectorProduction = $('#productionCollectionItem' + index);
                 }
 
                 //element opvullen
                 selectorProduction.text(name);
                 selectorProduction.attr('data-id', id);
-
-                teller++;
             });
 
-            //teller resetten, p element met genres leegmaken
-            teller = 0;
+            //p element met genres leegmaken
             selectorOverview.find('.card-content').find('p:nth-child(2)').text("");
 
             //laatste genre bepalen
             var length = genres.length;
 
             //genres weergeven
-            $.each(genres, function(){
+            $.each(genres, function(index){
                 var uitvoer;
                 //achter het laatste genre geen komma
-                if(teller === (length - 1)){
-                    uitvoer = genres[teller]['name'];
+                if(index === (length - 1)){
+                    uitvoer = genres[index]['name'];
                 }else{
-                    uitvoer = genres[teller]['name'] + ", ";
+                    uitvoer = genres[index]['name'] + ", ";
                 }
                 selectorOverview.find('.card-content').find('p:nth-child(2)').append(uitvoer);
-                teller++;
             });
         });
     };
@@ -182,7 +171,6 @@ var Movies = function(){
         $.getJSON('https://api.themoviedb.org/3/movie/' + movieId + '/credits' + '?api_key=' + omdbKey, function(data){
             var cast = data['cast'];
             var crew = data['crew'];
-            var teller = 0; //om door de lijst met crewmembers te lopen
             var tellerWeergave = 0; //om bij te houden hoeveel crewmembers we al weergeven
 
             //we laten 5 acteurs en 5 crewmembers zien
@@ -208,12 +196,12 @@ var Movies = function(){
             }
 
             //door de lijst met alle crewmembers lopen
-            $.each(crew, function () {
+            $.each(crew, function (index) {
                 //gegevens opvragen
-                var job = crew[teller]['job'];
-                var department = crew[teller]['department'];
-                var name = crew[teller]['name'];
-                var id = crew[teller]['id'];
+                var job = crew[index]['job'];
+                var department = crew[index]['department'];
+                var name = crew[index]['name'];
+                var id = crew[index]['id'];
                 var selectorHuidig;
 
                 //we geven max. 5 crew weer
@@ -236,10 +224,50 @@ var Movies = function(){
                             break;
                     }
                 }
-
-                teller++;
             });
         });
+    };
+
+    //lijst maken van specifieke filmen
+    var getMovieList = function(listId){
+        //ohpalen movieIds
+        var movieIds = Lists.getSpecificListItems(listId);
+        var selector = $('#movieCollectionItem');
+
+        //checken of er wel movieIds zijn
+        if(movieIds !== "error"){
+            //voor elke film de data ophalen
+            $.each(movieIds, function(index){
+                $.getJSON('https://api.themoviedb.org/3/movie/' + movieIds[index] + '?api_key=' + omdbKey, function(data){
+                    console.log('movie: ' + movieIds[index]);
+                    //gegevens opvragen
+                    var title = data['title'];
+                    var image = "http://image.tmdb.org/t/p/w92/" + data['poster_path'];
+                    var rating = data['vote_average'];
+                    var id = data['id'];
+                    var jaar = data['release_date'].split('-')[0];
+
+                    if (index !== 1){
+                        //element clonen
+                        var clone = selector.clone(true).prop('id', 'movieCollectionItem' + id);
+                        clone.appendTo('#collectionMovies');
+
+                        //selector aanpassen
+                        selector = $('#movieCollectionItem' + id);
+                    }
+
+                    //element vullen
+                    selector.find('.title').text(title);
+                    selector.find('img').attr('src', image);
+                    selector.find('p').html(jaar + "<br>" + rating);
+                    selector.find('a').prop('id', id);
+                });
+            });
+            return "ok";
+        }else{ //foutmelding
+            alert('List is empty!');
+            return "fout";
+        }
     };
 
     //gegeven aantal maanden toevoegen aan een datum
@@ -266,6 +294,7 @@ var Movies = function(){
         getGenres : getGenres,
         getMovie : getMovie,
         getPeople: getPeople,
+        getMovieList : getMovieList,
         omdbKey : omdbKey
     }
 }();

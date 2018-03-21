@@ -23,6 +23,10 @@
     text-shadow: 1px 1px 1px 1px #000000;
 }
 
+.icon-black{
+    color: black;
+}
+
 /*rijen*/
 .row{
     margin: 5%;
@@ -41,4 +45,15 @@
 .poster{
     border-radius: 0%;
     height: auto !important;
+}
+
+/*logo*/
+#navLogo img{
+    max-width: 30%;
+}
+
+#header{
+    max-height: 45px;
+    padding-top: 10px;
+    padding-right: 10px;
 }
