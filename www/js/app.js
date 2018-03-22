@@ -4,6 +4,10 @@ $(function(){
         async: false
     });
 
+    //voor backbutton houden we telkens bij wat de laatste knop is waar we op gedrukt hebben
+    var lastCall = [];
+    var oldLenght = 0;
+
 	document.addEventListener("deviceready", onDeviceReady, false);
 
     $(".button-collapse").sideNav();
@@ -13,18 +17,44 @@ $(function(){
         $('.spa').hide();
         $('#' + dit.data('show')).show();
         $('.button-collapse').sideNav('hide');
+        console.log(lastCall);
+        console.log(dit);
     }
 
     //naar de gekozen tab gaan
-    $('.side-nav a').click(function(){
+    $('.side-nav').find('.navigation').click(function(){
         //als we op de navigatie knop voor lijsten klikken, moeten we een functie oproepen
-        if($(this).attr('id', 'navLists')){
+        if($(this).attr('id') === 'navLists'){
             $('#listsCollection').find('a').not(':first').remove();
             Lists.showLists();
         }
 
         //van tab veranderen
         changeTab($(this));
+        lastCall.push($(this));
+    });
+
+    //Teruggaan naar de laatst bezochte tab
+    $('#backButton').click(function(){
+        //Als we niet naar de laatst bezochte tab terug kunnen gaan we er 2 terug
+        if(oldLenght === lastCall.length){
+            //Als we bij start meteen op de terugknop klikken krijgen we een error message
+            if(oldLenght === 0) {
+                alert('Nothing to go back to!');
+            }else{
+                lastCall[lastCall.length-4].trigger("click");
+            }
+        }else{
+            //Als er een al een tab bezocht is, gaan we terug naar deze tab gaan.
+            if(lastCall.length > 1){
+                console.log("lengte:" + lastCall.length);
+                console.log("bestaat:" + lastCall[lastCall.length-2].length);
+                oldLenght = lastCall.length+1;
+                lastCall[lastCall.length-2].trigger("click");
+            }else{ //als er nog geen tab bezocht is, gaan we terug naar de hometab
+                changeTab($('#buttonHome'));
+            }
+        }
     });
 
     //Lijst van filmen weergeven
@@ -33,7 +63,6 @@ $(function(){
         var tellersString;
         var tellers;
         var genreId = 0;
-        console.log(Movies.omdbKey);
 
         //movielijst leeg maken
         $('#collectionMovies').find('li').not(':first').remove();
@@ -59,6 +88,7 @@ $(function(){
 
         //veranderen van tab
         changeTab($(this));
+        lastCall.push($(this));
         console.log(tellers[0]);
         console.log(tellers[1]);
     });
@@ -66,18 +96,20 @@ $(function(){
     //lijst van genres weergeven
     $('.buttonGenre').click(function(){
         changeTab($(this));
+        lastCall.push($(this));
     });
 
     //film pagina
     $('.buttonMovieDetail').click(function(){
         //movie id opvragen
-        var movie = $(this).prop('id');
+        var movie = $(this).attr('data-id');
 
         //film weergeven
         showMovie(movie);
 
         //veranderen van tab
         changeTab($(this));
+        lastCall.push($(this));
     });
 
     //bepaalde film laten zien
@@ -112,6 +144,7 @@ $(function(){
         if(controle !== "fout"){
             //veranderen van tab
             changeTab($(this));
+            lastCall.push($(this));
         }
     });
 

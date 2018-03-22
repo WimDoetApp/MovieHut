@@ -66,7 +66,7 @@ var Movies = function(){
                 selector.find('.title').text(titel);
                 selector.find('img').attr('src', image);
                 selector.find('p').html(jaar + "<br>" + rating);
-                selector.find('a').prop('id', id);
+                selector.find('a').attr('data-id', id);
             });
         });
 
@@ -260,7 +260,7 @@ var Movies = function(){
                     selector.find('.title').text(title);
                     selector.find('img').attr('src', image);
                     selector.find('p').html(jaar + "<br>" + rating);
-                    selector.find('a').prop('id', id);
+                    selector.find('a').attr('data-id', id);
                 });
             });
             return "ok";
