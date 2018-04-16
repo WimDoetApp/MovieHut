@@ -49,8 +49,8 @@
 
     <!-- Tab met info over de app -->
     <div class="row spa" id="tabInfo">
-        <!-- Info over de auteur -->
         <div class="col s12 m6">
+            <!-- Info over de auteur -->
             <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
                     <span class="card-title">Created by:</span>
@@ -69,16 +69,43 @@
                     <a href="sms:+32472285696">SMS</a>
                 </div>
             </div>
+            <!-- Info over de gebruikte tools -->
+            <div class="card">
+                <div class="card-content">
+                    <h4>Credits</h4>
+                    <p>The resources used to build this app.</p>
+                </div>
+                <div class="card-tabs">
+                    <ul class="tabs tabs-fixed-width">
+                        <li class="tab"><a class="active" href="#tabAPI">API</a></li>
+                        <li class="tab"><a href="#tabFramework">Framework</a></li>
+                        <li class="tab"><a href="#tabPlugins">Plugins</a></li>
+                    </ul>
+                </div>
+                <div class="card-content grey lighten-4">
+                    <div id="tabAPI">This app uses <a href="https://www.themoviedb.org/" target="_blank">The Movie Database's API</a></div>
+                    <div id="tabFramework"><a href="http://materializecss.com/" target="_blank">Materialize</a> is the CSS & javascript framework used for this APP</div>
+                    <div id="tabPlugins">This app uses the cordova plugin <a href="https://github.com/EddyVerbruggen/cordova-plugin-actionsheet" target="_blank">ActionSheet</a> by <a href="https://twitter.com/eddyverbruggen" target="_blank">Eddy Verbruggen</a></div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Tab met keuzes voor lijsten van filmen -->
     <div class="row spa" id="tabMovies">
-        <a href="#!" class="waves-effect waves-light btn col s10 offset-s1 buttonMovieList" data-show="tabMovieList" data-name="upcoming">Upcoming movies</a>
-        <a href="#!" class="waves-effect waves-light btn col s10 offset-s1 buttonMovieList" data-show="tabMovieList" data-name="new">New movies</a>
-        <a href="#!" class="waves-effect waves-light btn col s10 offset-s1 buttonMovieList" data-show="tabMovieList" data-name="popular">Popular movies</a>
-        <a href="#!" class="waves-effect waves-light btn col s10 offset-s1 buttonGenre" data-show="tabGenreList">By Genre</a>
-        <!-- <a href="#!" class="waves-effect waves-light btn col s10 offset-s1" data-show="">Advanced search</a> -->
+        <div class="col s12 m7">
+            <a href="#!" class="waves-effect waves-light btn col s10 offset-s1 buttonMovieList" data-show="tabMovieList" data-name="upcoming">Upcoming movies</a>
+            <a href="#!" class="waves-effect waves-light btn col s10 offset-s1 buttonMovieList" data-show="tabMovieList" data-name="new">New movies</a>
+            <a href="#!" class="waves-effect waves-light btn col s10 offset-s1 buttonMovieList" data-show="tabMovieList" data-name="popular">Popular movies</a>
+            <a href="#!" class="waves-effect waves-light btn col s10 offset-s1 buttonGenre" data-show="tabGenreList">By Genre</a>
+            <!-- <a href="#!" class="waves-effect waves-light btn col s10 offset-s1" data-show="">Advanced search</a> -->
+        </div>
+        <div class="col s12 m7">
+            <h4>Search by name:</h4>
+            <input type="text" name="searchName" id="searchName" placeholder="name">
+            <a href="#!" class="waves-effect waves-light btn col s10 offset-s1 buttonSearch" data-name="movies" data-show="tabMovieList">Search for movies</a>
+            <a href="#!" class="waves-effect waves-light btn col s10 offset-s1 buttonSearch" data-name="people" data-show="tabPersonenList">Search for people</a>
+        </div>
     </div>
 
     <!-- Tab met lijst van filmen -->
@@ -90,6 +117,19 @@
                 <p></p>
                 <a href="#!" class="deleteFromLijst" data-id="" data-listId="">Delete from list <i class="material-icons inline-icon">delete</i></a>
                 <a href="#!" class="btn-floating halfway-fab waves-effect waves-light secondary-content buttonMovieDetail" data-show="tabMovieDetail" data-id=""><i class="material-icons">expand_more</i></a>
+            </li>
+        </ul>
+        <a class="waves-effect waves-light btn-large col s6 offset-s3 buttonMoreMovies" data-id="" data-name="" data-show="" data-tellerpagina=""><i class="material-icons left">more</i>More</a>
+    </div>
+
+    <!-- Tab met lijst van mensen -->
+    <div class="row spa" id="tabPersonenList">
+        <ul class="collection" id="collectionPersonen">
+            <li class="collection-item avatar" id="personenCollectionItem">
+                <img src="" alt="" class="circle poster">
+                <span class="title"></span>
+                <p></p>
+                <a href="#!" class="btn-floating halfway-fab waves-effect waves-light secondary-content buttonPersoonDetail" data-show="tabMovieDetail" data-id=""><i class="material-icons">expand_more</i></a>
             </li>
         </ul>
     </div>
@@ -122,23 +162,23 @@
         <div class="card">
             <div class="card-tabs">
                 <ul class="tabs tabs-fixed-width">
-                    <li class="tab"><a href="#test4">Crew</a></li>
-                    <li class="tab"><a class="active" href="#test5">Actors</a></li>
-                    <li class="tab"><a href="#test6">Production</a></li>
+                    <li class="tab"><a href="#tabCrew">Crew</a></li>
+                    <li class="tab"><a class="active" href="#tabActors">Actors</a></li>
+                    <li class="tab"><a href="#tabProduction">Production</a></li>
                 </ul>
             </div>
             <div class="card-content grey lighten-4">
-                <div id="test4">
+                <div id="tabCrew">
                     <div class="collection" id="crewCollection">
                         <a href="#!" class="collection-item" id="crewCollectionItem0" data-id=""></a>
                     </div>
                 </div>
-                <div id="test5">
+                <div id="tabActors">
                     <div class="collection" id="actorCollection">
                         <a href="#!" class="collection-item" id="actorCollectionItem" data-id=""></a>
                     </div>
                 </div>
-                <div id="test6">
+                <div id="tabProduction">
                     <div class="collection" id="productionCollection">
                         <a href="#!" class="collection-item" id="productionCollectionItem" data-id=""></a>
                     </div>

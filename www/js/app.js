@@ -61,16 +61,20 @@ $(function(){
         var tellersString;
         var tellers;
         var genreId = 0;
+        var buttonMoreSelector = $('.buttonMoreMovies');
 
         //movielijst leeg maken
         $('#collectionMovies').find('li').not(':first').remove();
         $('.deleteFromLijst').hide();
+        $('.buttonMoreMovies').show();
 
         //vinden op wat er gefilterd moet worden
         var criteria = $(this).data('name');
+        buttonMoreSelector.attr('data-name', criteria);
 
         if(criteria === "genre"){
             genreId = $(this).data('id');
+            buttonMoreSelector.attr('data-id', genreId);
         }
 
         //filmen vinden
@@ -82,6 +86,61 @@ $(function(){
              tellers[1]++;
              tellersString = Movies.getDiscoverMovies(criteria, tellers[0], tellers[1], genreId);
              tellers = tellersString.split(" ");
+        }
+
+        buttonMoreSelector.attr('data-show', $(this).data('show'));
+        buttonMoreSelector.attr('data-tellerpagina', tellers[1]);
+
+        //veranderen van tab
+        changeTab($(this));
+        lastCall.push($(this));
+    });
+
+    //meer filmen in lijst weergeven
+    $('.buttonMoreMovies').click(function(){
+        //variabelen
+        var tellersString;
+        var tellers;
+        var genreId = 0;
+        var buttonMoreSelector = $('.buttonMoreMovies');
+
+        //vinden op wat er gefilterd moet worden
+        var criteria = $(this).attr('data-name');
+        var tellerPagina = $(this).attr('data-tellerpagina');
+        tellerPagina++;
+
+        if(criteria === "genre"){
+            genreId = $(this).data('id');
+        }
+
+        //filmen vinden
+        tellersString = Movies.getDiscoverMovies(criteria, 1, tellerPagina, genreId);
+        tellers = tellersString.split(" ");
+
+        buttonMoreSelector.attr('data-tellerpagina', tellers[1]);
+
+        //veranderen van tab
+        changeTab($(this));
+        lastCall.push($(this));
+    });
+
+    //zoeken op naam
+    $('.buttonSearch').click(function(){
+        var criteria = $(this).attr('data-name');
+        var searchName = $('#searchName').val();
+
+        //filmen zoeken
+        if(criteria === 'movies'){
+            $('#collectionMovies').find('li').not(':first').remove();
+            $('.buttonMoreMovies').hide();
+
+            Movies.searchMovie(searchName);
+        }
+        //mensen zoeken
+        if(criteria === 'people'){
+            $('#collectionPersonen').find('li').not(':first').remove();
+
+            Movies.searchPeople(searchName);
         }
 
         //veranderen van tab
@@ -131,6 +190,7 @@ $(function(){
         //movielijst leeg maken
         $('#collectionMovies').find('li').not(':first').remove();
         $('.deleteFromLijst').show();
+        $('.buttonMoreMovies').hide();
 
         //filmlijst maken
         var id = $(this).attr('data-id');

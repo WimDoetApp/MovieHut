@@ -71,6 +71,74 @@ var Movies = function(){
         return tellerWeergave + " " + tellerPagina;
     };
 
+    //films zoeken op naam
+    var searchMovie = function(input){
+        //variabelen
+        var selector = $('#movieCollectionItem');
+
+        //data ophalen
+        $.getJSON('https://api.themoviedb.org/3/search/movie?api_key=' + omdbKey + '&language=en-US&query=' + input + '&page=1&include_adult=false', function(data) {
+            var results = data["results"];
+            //door alle resultaten loopen
+            $.each(results, function(index){
+                //gegevens opvragen
+                var id = results[index]['id'];
+                var titel = results[index]['title'];
+                var jaar = results[index]['release_date'].split('-')[0];
+                var rating = results[index]['vote_average'];
+                var image = "http://image.tmdb.org/t/p/w92/" + results[index]['poster_path'];
+
+                if (index !== 0){
+                    //element clonen
+                    var clone = selector.clone(true).prop('id', 'movieCollectionItem' + id);
+                    clone.appendTo('#collectionMovies');
+
+                    //selector aanpassen
+                    selector = $('#movieCollectionItem' + id);
+                }
+
+                //element vullen
+                selector.find('.title').text(titel);
+                selector.find('img').attr('src', image);
+                selector.find('p').html(jaar + "<br>" + rating);
+                selector.find('a').attr('data-id', id);
+            });
+        });
+    };
+
+    //mensen zoeken op naam
+    var searchPeople = function(input){
+        //variabelen
+        var selector = $('#personenCollectionItem');
+
+        $.getJSON('https://api.themoviedb.org/3/search/person?api_key=' + omdbKey + '&language=en-US&query=' + input + '&page=1&include_adult=false', function(data) {
+            var results = data["results"];
+            //door alle resultaten loopen
+            $.each(results, function(index){
+               //gegevens opvragen
+               var id = results[index]['id'];
+               var name = results[index]['name'];
+               var knownFor = results[index]['known_for'][0]['title'];
+               var image = "http://image.tmdb.org/t/p/w92/" + results[index]['profile_path'];
+
+                if (index !== 0){
+                    //element clonen
+                    var clone = selector.clone(true).prop('id', 'personenCollectionItem' + id);
+                    clone.appendTo('#collectionPersonen');
+
+                    //selector aanpassen
+                    selector = $('#personenCollectionItem' + id);
+                }
+
+                //element vullen
+                selector.find('.title').text(name);
+                selector.find('img').attr('src', image);
+                selector.find('p').html("Know for:<br>" + knownFor);
+                selector.find('a').attr('data-id', id);
+            });
+        });
+    };
+
     //genres ophalen
     var getGenres = function(){
         //data ophalen
@@ -289,6 +357,8 @@ var Movies = function(){
 
     return{
         getDiscoverMovies : getDiscoverMovies,
+        searchMovie : searchMovie,
+        searchPeople : searchPeople,
         getGenres : getGenres,
         getMovie : getMovie,
         getPeople: getPeople,
