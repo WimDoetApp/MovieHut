@@ -10,6 +10,7 @@ var Lists = function(){
 
     var setLists = function(item){
         lists.push(item);
+        setLocalStorage();
     };
 
     var getListItems = function(){
@@ -39,6 +40,36 @@ var Lists = function(){
 
     var setListItems = function(listId, movieId){
         listItems.push([listId, movieId]);
+        setLocalStorage();
+    };
+
+    var deleteList = function(listId){
+        lists.splice(listId, 1);
+        setLocalStorage();
+    };
+
+    var deleteListItem = function(listId, movieId){
+        //door de 2-dimensionale array lopen met een dubbele loop
+        $.each(listItems, function(index, element){
+            if(element[0] === listId && element[1] === movieId){
+                listItems.splice(index, 1);
+            }
+        });
+
+        setLocalStorage();
+    };
+
+    //Checken of een film al in de lijst staat
+    var filmInLijst = function(listId, movieId){
+        var output = false;
+        //door de 2-dimensionale array lopen met een dubbele loop
+        $.each(listItems, function(index, element){
+            if(element[0] === listId && element[1] === movieId){
+                output = true;
+            }
+        });
+
+        return output;
     };
 
     //bij opstarten: local storage ophalen
@@ -69,6 +100,8 @@ var Lists = function(){
     //lists weergeven
     var showLists = function(){
         var selector = $('#listsCollectionItem0');
+        var content;
+        var deleteKnop;
 
         $.each(lists, function(index) {
             if(index !== 0){
@@ -80,9 +113,13 @@ var Lists = function(){
                 selector = $('#listsCollectionItem' + index);
             }
 
+            content = selector.find('a:first');
+            deleteKnop = selector.find('a:last');
+
             //element opvullen
-            selector.text(lists[index]);
-            selector.attr('data-id', index);
+            content.text(lists[index]);
+            content.attr('data-id', index);
+            deleteKnop.attr('data-id', index);
         });
     };
 
@@ -92,8 +129,10 @@ var Lists = function(){
         getListItem : getListItems,
         getSpecificListItems : getSpecificListItems,
         setListItem : setListItems,
+        deleteList : deleteList,
+        deleteListItem : deleteListItem,
+        filmInLijst : filmInLijst,
         init : init,
-        setLocalStorage : setLocalStorage,
         showLists : showLists,
         lists : lists
     }

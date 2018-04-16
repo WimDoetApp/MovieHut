@@ -57,3 +57,12 @@
     padding-top: 10px;
     padding-right: 10px;
 }
+
+/*Lijsten*/
+li.collectionLists {
+    list-style-type: none;
+}
+
+.buttonSpecificMovieList{
+    color: #26a69a !important;
+}

@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
     <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <!-- Jquery en materialize -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
     <link rel="stylesheet" href="stijl.css"/>
     <title>Movies</title>
 </head>
@@ -15,14 +20,14 @@
     <nav class="#8c9eff blue-grey accent-1">
         <div class="nav-wrapper">
             <a href="#!" class="brand-logo"><i>MovieHut</i></a>
-            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <img src="images/movie.svg" id="header" class="right" alt="logo"/>
         </div>
     </nav>
 </div>
 
 <!-- Sidenav -->
-<ul class="side-nav blue-grey lighten-5" id="mobile-demo">
+ <ul class="sidenav blue-grey lighten-5" id="mobile-demo">
     <li class="center-align" id="navLogo"><img src="images/movie.svg" alt="logo"/></li>
     <li><a href="#!" data-show="tabHome" class="navigation" id="buttonHome"><i class="material-icons">home</i>Home</a></li>
     <li class="divider blue-grey lighten-4"></li>
@@ -83,6 +88,7 @@
                 <img src="" alt="" class="circle poster">
                 <span class="title"></span>
                 <p></p>
+                <a href="#!" class="deleteFromLijst" data-id="" data-listId="">Delete from list <i class="material-icons inline-icon">delete</i></a>
                 <a href="#!" class="btn-floating halfway-fab waves-effect waves-light secondary-content buttonMovieDetail" data-show="tabMovieDetail" data-id=""><i class="material-icons">expand_more</i></a>
             </li>
         </ul>
@@ -114,23 +120,25 @@
 
         <!-- Info over cast, crew en productie -->
         <div class="card">
-            <ul id="tabs-swipe-demo" class="tabs tabs-fixed-width">
-                <li class="tab"><a href="#test-swipe-1">Crew</a></li>
-                <li class="tab"><a class="active" href="#test-swipe-2">Actors</a></li>
-                <li class="tab"><a href="#test-swipe-3">Production</a></li>
-            </ul>
+            <div class="card-tabs">
+                <ul class="tabs tabs-fixed-width">
+                    <li class="tab"><a href="#test4">Crew</a></li>
+                    <li class="tab"><a class="active" href="#test5">Actors</a></li>
+                    <li class="tab"><a href="#test6">Production</a></li>
+                </ul>
+            </div>
             <div class="card-content grey lighten-4">
-                <div id="test-swipe-1">
+                <div id="test4">
                     <div class="collection" id="crewCollection">
                         <a href="#!" class="collection-item" id="crewCollectionItem0" data-id=""></a>
                     </div>
                 </div>
-                <div id="test-swipe-2">
+                <div id="test5">
                     <div class="collection" id="actorCollection">
                         <a href="#!" class="collection-item" id="actorCollectionItem" data-id=""></a>
                     </div>
                 </div>
-                <div id="test-swipe-3">
+                <div id="test6">
                     <div class="collection" id="productionCollection">
                         <a href="#!" class="collection-item" id="productionCollectionItem" data-id=""></a>
                     </div>
@@ -145,8 +153,17 @@
     <div class="row spa" id="tabLists">
         <h3>Lists</h3>
         <div class="collection" id="listsCollection">
-            <a href="#!" class="collection-item buttonSpecificMovieList" id="listsCollectionItem0" data-id="" data-show="tabMovieList"></a>
+            <li class="collection-item collectionLists" id="listsCollectionItem0">
+                <a href="#!" class="buttonSpecificMovieList" data-id="" data-show="tabMovieList"></a>
+                <a href="#!" class="secondary-content deleteLijst" data-id=""><i class="material-icons">delete</i></a>
+            </li>
         </div>
+        <h4>Add a list</h4>
+        <div class="input-field col s12">
+            <label for="listName">list name</label>
+            <input type="text" name="listName" id="listName" placeholder="list name">
+        </div>
+        <a class="waves-effect waves-light btn-large col s6 offset-s3" id="buttonAddList"><i class="material-icons left">library_add</i>Add list</a>
     </div>
 </div>
 
@@ -166,8 +183,6 @@
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 <script src="cordova.js"></script>
 <script defer src="js/app.js"></script>
 <script defer src="js/movies.js"></script>

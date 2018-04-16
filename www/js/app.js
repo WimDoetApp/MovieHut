@@ -10,22 +10,20 @@ $(function(){
 
 	document.addEventListener("deviceready", onDeviceReady, false);
 
-    $(".button-collapse").sideNav();
+    $('.sidenav').sidenav();
 
     //veranderen van tab (content die op de pagina wordt weergegven)
     function changeTab(dit){
         $('.spa').hide();
         $('#' + dit.data('show')).show();
-        $('.button-collapse').sideNav('hide');
-        console.log(lastCall);
-        console.log(dit);
+        $('.sidenav').sidenav('close');
     }
 
     //naar de gekozen tab gaan
-    $('.side-nav').find('.navigation').click(function(){
+    $('.sidenav').find('.navigation').click(function(){
         //als we op de navigatie knop voor lijsten klikken, moeten we een functie oproepen
         if($(this).attr('id') === 'navLists'){
-            $('#listsCollection').find('a').not(':first').remove();
+            $('#listsCollection').find('li').not(':first').remove();
             Lists.showLists();
         }
 
@@ -47,8 +45,8 @@ $(function(){
         }else{
             //Als er een al een tab bezocht is, gaan we terug naar deze tab gaan.
             if(lastCall.length > 1){
-                console.log("lengte:" + lastCall.length);
-                console.log("bestaat:" + lastCall[lastCall.length-2].length);
+                //console.log("lengte:" + lastCall.length);
+                //console.log("bestaat:" + lastCall[lastCall.length-2].length);
                 oldLenght = lastCall.length+1;
                 lastCall[lastCall.length-2].trigger("click");
             }else{ //als er nog geen tab bezocht is, gaan we terug naar de hometab
@@ -66,13 +64,13 @@ $(function(){
 
         //movielijst leeg maken
         $('#collectionMovies').find('li').not(':first').remove();
+        $('.deleteFromLijst').hide();
 
         //vinden op wat er gefilterd moet worden
         var criteria = $(this).data('name');
 
         if(criteria === "genre"){
             genreId = $(this).data('id');
-            console.log(genreId);
         }
 
         //filmen vinden
@@ -89,8 +87,6 @@ $(function(){
         //veranderen van tab
         changeTab($(this));
         lastCall.push($(this));
-        console.log(tellers[0]);
-        console.log(tellers[1]);
     });
 
     //lijst van genres weergeven
@@ -128,13 +124,13 @@ $(function(){
     $('#buttonAddToList').click(function(){
         var movie = $('#tabMovieDetail').attr('data-id');
         Popup.addMoviePopup(movie);
-        Lists.setLocalStorage();
     });
 
     //lijst met specifieke filmen ophalen
     $('.buttonSpecificMovieList').click(function(){
         //movielijst leeg maken
         $('#collectionMovies').find('li').not(':first').remove();
+        $('.deleteFromLijst').show();
 
         //filmlijst maken
         var id = $(this).attr('data-id');
@@ -148,17 +144,61 @@ $(function(){
         }
     });
 
+    //lijsten deleten
+    $('.deleteLijst').click(function(){
+        var controle = confirm("Delete list, are you sure?");
+
+        if(controle){
+            var listId = $(this).attr('data-id');
+            Lists.deleteList(listId);
+            $('#navLists').trigger('click');
+        }
+    });
+
+    //film uit lijst deleten
+    $('.deleteFromLijst').click(function(){
+        var controle = confirm("Delete from list, are you sure?");
+
+        if(controle){
+            var movieId = $(this).attr('data-id');
+            var listId = $(this).attr('data-listId');
+            Lists.deleteListItem(parseInt(listId), movieId);
+
+            //na een film uit de lijst te verwijderen willen we de films refreshen
+            $('#collectionMovies').find('li').not(':first').remove();
+            var controle = Movies.getMovieList(parseInt(listId));
+
+            //als de lijst leeg is veranderen we niet van tab
+            if(controle !== "fout"){
+                //veranderen van tab
+                changeTab($(this));
+                $('.spa').hide();
+                $('#tabMovieList').show();
+            }else{
+                //teruggaan
+                $('#backButton').trigger('click');
+            }
+        }
+    });
+
+    //lijst toevoegen
+    $('#buttonAddList').click(function(){
+        var listName = $('#listName').val();
+        Lists.setLists(listName);
+        $('#navLists').trigger('click');
+    });
+
     //Preloader laten zien wanneer we gegevens uit onze api laden -- werkt nog niet!
     $(document).ajaxStart(function(){
         $('.container').hide();
         $('#tabLoader').show();
-        console.log("hoi");
+        //console.log("hoi");
     });
 
     $(document).ajaxComplete(function(){
         $('#tabLoader').hide();
         $('.container').show();
-        console.log("hai");
+        //console.log("hai");
     });
 });
 
@@ -173,4 +213,6 @@ function onDeviceReady() {
     Movies.getGenres();
     //local storage oproepen
     Lists.init();
+    //materialize components
+    $('.tabs').tabs();
 };

@@ -34,7 +34,6 @@ var Movies = function(){
         //data ophalen
         $.getJSON('https://api.themoviedb.org/3/discover/movie?api_key=' + omdbKey + '&' + filter + '&include_adult=false&include_video=false&page=' + tellerPagina, function(data) {
             var results = data["results"];
-            console.log(results);
             //door alle resultaten loopen
             $.each(results, function(index){
                 //gegevens opvragen
@@ -46,7 +45,6 @@ var Movies = function(){
 
                 if(criteria === "upcoming"){
                     var date = new Date(results[index]['release_date']);
-                    console.log(date);
                     var maand = maandNaam(date.getMonth());
                     rating = date.getDate() + " " + maand;
                 }
@@ -239,7 +237,6 @@ var Movies = function(){
             //voor elke film de data ophalen
             $.each(movieIds, function(index){
                 $.getJSON('https://api.themoviedb.org/3/movie/' + movieIds[index] + '?api_key=' + omdbKey, function(data){
-                    console.log('movie: ' + movieIds[index]);
                     //gegevens opvragen
                     var title = data['title'];
                     var image = "http://image.tmdb.org/t/p/w92/" + data['poster_path'];
@@ -247,7 +244,7 @@ var Movies = function(){
                     var id = data['id'];
                     var jaar = data['release_date'].split('-')[0];
 
-                    if (index !== 1){
+                    if (index !== 0){
                         //element clonen
                         var clone = selector.clone(true).prop('id', 'movieCollectionItem' + id);
                         clone.appendTo('#collectionMovies');
@@ -261,6 +258,7 @@ var Movies = function(){
                     selector.find('img').attr('src', image);
                     selector.find('p').html(jaar + "<br>" + rating);
                     selector.find('a').attr('data-id', id);
+                    selector.find('a').attr('data-listId', listId);
                 });
             });
             return "ok";
