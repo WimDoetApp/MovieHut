@@ -1,23 +1,24 @@
 var Lists = function(){
-    //variabelen
-    var listItems = [];
-    var lists = [];
-
     //de variabelen in andere functies gebruiken (getters en setters)
     var getLists = function(){
+        var lists = JSON.parse(localStorage.getItem('lists'));
         return lists;
     };
 
     var setLists = function(item){
+        var lists = JSON.parse(localStorage.getItem('lists'));
         lists.push(item);
-        setLocalStorage();
+        localStorage.setItem('lists', JSON.stringify(lists));
     };
 
     var getListItems = function(){
+        var listItems = JSON.parse(localStorage.getItem('listItems'));
         return listItems;
     };
 
     var getSpecificListItems = function(listId){
+        console.log(localStorage.getItem('listItems'));
+        var listItems = JSON.parse(localStorage.getItem('listItems'));
         var movieIds = []; //de ids van de films in de lijst
 
         console.log(listItems);
@@ -39,16 +40,19 @@ var Lists = function(){
     };
 
     var setListItems = function(listId, movieId){
+        var listItems = JSON.parse(localStorage.getItem('listItems'));
         listItems.push([listId, movieId]);
-        setLocalStorage();
+        localStorage.setItem('listItems', JSON.stringify(listItems));
     };
 
     var deleteList = function(listId){
+        var lists = JSON.parse(localStorage.getItem('lists'));
         lists.splice(listId, 1);
-        setLocalStorage();
+        localStorage.setItem('lists', JSON.stringify(lists));
     };
 
     var deleteListItem = function(listId, movieId){
+        var listItems = JSON.parse(localStorage.getItem('listItems'));
         //door de 2-dimensionale array lopen met een dubbele loop
         $.each(listItems, function(index, element){
             if(element[0] === listId && element[1] === movieId){
@@ -56,11 +60,23 @@ var Lists = function(){
             }
         });
 
-        setLocalStorage();
+        localStorage.setItem('listItems', JSON.stringify(listItems));
+    };
+
+    var setFirstVisit = function(){
+        var firstVisit = false;
+        localStorage.setItem('firstVisit', JSON.stringify(firstVisit));
+    };
+
+    var getFirstVisit = function(){
+        console.log(localStorage.getItem('firstvisit'));
+        var firstVisit = JSON.parse(localStorage.getItem('firstvisit'));
+        return firstVisit;
     };
 
     //Checken of een film al in de lijst staat
     var filmInLijst = function(listId, movieId){
+        var listItems = JSON.parse(localStorage.getItem('listItems'));
         var output = false;
         //door de 2-dimensionale array lopen met een dubbele loop
         $.each(listItems, function(index, element){
@@ -75,26 +91,23 @@ var Lists = function(){
     //bij opstarten: local storage ophalen
     var init = function(){
         var listsInitial = ['want to see', 'favorites'];
-        lists = [];
+        var listItemsInitial = [[]];
+        var firstVisitInitial = true;
 
         var lists_str = localStorage.getItem('lists');
-        if (lists_str !== null) {
-            lists = JSON.parse(lists_str);
-        }else{ //indien leeg --> local storage opbouwen
+        if (lists_str === null) {
             localStorage.setItem('lists', JSON.stringify(listsInitial));
-            lists = listsInitial;
+        }
+
+        var firstVisit_str = localStorage.getItem('firstvisit');
+        if(firstVisit_str === null){
+            localStorage.setItem('firstvisit', JSON.stringify(firstVisitInitial));
         }
 
         var listItems_str = localStorage.getItem('listItems');
-        if (listItems_str !== null){
-            listItems = JSON.parse(listItems_str);
+        if(listItems_str === null){
+            localStorage.setItem('listItems', JSON.stringify(listItemsInitial));
         }
-    };
-
-    //opslagen local storage data
-    var setLocalStorage = function(){
-        localStorage.setItem('lists', JSON.stringify(lists));
-        localStorage.setItem('listItem', JSON.stringify(listItems));
     };
 
     //lists weergeven
@@ -102,6 +115,7 @@ var Lists = function(){
         var selector = $('#listsCollectionItem0');
         var content;
         var deleteKnop;
+        var lists = JSON.parse(localStorage.getItem('lists'));
 
         $.each(lists, function(index) {
             if(index !== 0){
@@ -131,9 +145,10 @@ var Lists = function(){
         setListItem : setListItems,
         deleteList : deleteList,
         deleteListItem : deleteListItem,
+        setFirstVisit : setFirstVisit,
+        getFirstVisit : getFirstVisit,
         filmInLijst : filmInLijst,
         init : init,
         showLists : showLists,
-        lists : lists
     }
 }();

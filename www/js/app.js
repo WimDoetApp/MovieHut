@@ -21,11 +21,22 @@ $(function(){
 
     //naar de gekozen tab gaan
     $('.sidenav').find('.navigation').click(function(){
-        //als we op de navigatie knop voor lijsten klikken, moeten we een functie oproepen
+        //als we het overzicht van lijsten willen, moeten we een functie oproepen
         if($(this).attr('id') === 'navLists'){
             $('#listsCollection').find('li').not(':first').remove();
             Lists.showLists();
+
+            //de standaardlijsten kunnen we niet deleten
+            $('.deleteLijst').each(function(){
+                if($(this).attr('data-id') === "0" || $(this).attr('data-id') === "1"){
+                    $(this).hide();
+                }else{
+                    $(this).show();
+                }
+                console.log($(this).attr('data-id'));
+            });
         }
+        console.log($(this).attr('id'));
 
         //van tab veranderen
         changeTab($(this));
@@ -133,6 +144,7 @@ $(function(){
         if(criteria === 'movies'){
             $('#collectionMovies').find('li').not(':first').remove();
             $('.buttonMoreMovies').hide();
+            $('.deleteFromLijst').hide();
 
             Movies.searchMovie(searchName);
         }
@@ -275,4 +287,9 @@ function onDeviceReady() {
     Lists.init();
     //materialize components
     $('.tabs').tabs();
+    //popup bij start
+    if(!Lists.getFirstVisit()){
+        Popup.firstVisitPopup();
+    }
+    //localStorage.clear();
 };

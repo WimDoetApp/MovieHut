@@ -2,7 +2,7 @@ var Popup = function(){
     var movie = 0;
 
     //wat er gebeurt nadat op de knop geklikt is
-    var callback = function(buttonIndex){
+    var callbackMovie = function(buttonIndex){
         setTimeout(function(){
             if(Lists.filmInLijst(buttonIndex-1,movie)){
                 M.toast({html: 'Movie already in list!'});
@@ -13,6 +13,14 @@ var Popup = function(){
             console.log(Lists.getLists());
             console.log(Lists.getListItem());
             console.log(buttonIndex);
+        });
+    };
+
+    var callBackFirstVisit = function(buttonIndex){
+        setTimeout(function(){
+           if(buttonIndex === 1){
+               Lists.setFirstVisit();
+           }
         });
     };
 
@@ -30,12 +38,24 @@ var Popup = function(){
         };
         // buttonIndex = index van de knop waarop geklikt is
         movie = movieId;
-        window.plugins.actionsheet.show(options, callback);
+        window.plugins.actionsheet.show(options, callbackMovie);
     };
 
-    //Popup om te confirmeren dat we
+    //First visit popup
+    var firstVisitPopup = function () {
+        var options = {
+            androidTheme: window.plugins.actionsheet.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
+            title: 'This app needs internet to function!',
+            buttonLabels: ['Ok', "Don't show this again"],
+            position: [20, 40], // for iPad pass in the [x, y] position of the popover
+            destructiveButtonLast: true // you can choose where the destructive button is shown
+        };
+        // buttonIndex = index van de knop waarop geklikt is
+        window.plugins.actionsheet.show(options, callBackFirstVisit);
+    };
 
     return{
-        addMoviePopup : addMoviePopup
+        addMoviePopup : addMoviePopup,
+        firstVisitPopup : firstVisitPopup
     }
 }();
