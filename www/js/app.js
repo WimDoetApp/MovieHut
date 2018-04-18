@@ -39,10 +39,17 @@ $(function(){
                 console.log($(this).attr('data-id'));
             });
         }
-        console.log($(this).attr('id'));
 
-        //van tab veranderen
-        changeTab($(this));
+        //Bij de hometab willen we een combinatie van twee andere tabs
+        if($(this).attr('data-show') === "tabHome"){
+            $('.spa').hide();
+            showMoviesToday();
+            $('#tabHome').show();
+            $('.sidenav').sidenav('close');
+        }else{
+            //van tab veranderen
+            changeTab($(this));
+        }
         lastCall.push($(this));
     });
 
@@ -182,6 +189,28 @@ $(function(){
         lastCall.push($(this));
     });
 
+    //persoon pagina
+    $('.buttonPersoonDetail').click(function(){
+        //persoon id opvragen
+        var person = $(this).attr('data-id');
+        console.log(person);
+
+        $('.spa').hide();
+
+        //movielijst leeg maken
+        $('#collectionMovies').find('li').not(':first').remove();
+        $('.deleteFromLijst').hide();
+        $('.buttonMoreMovies').hide();
+
+        //persoon weergeven
+        Movies.getPerson(person);
+
+        //veranderen van tab
+        $('#tabPeopleDetail').show();
+        $('#tabMovieList').show();
+        lastCall.push($(this))
+    });
+
     //bepaalde film laten zien
     function showMovie(movieId){
         //lijsten leeg maken
@@ -262,26 +291,26 @@ $(function(){
         Lists.setLists(listName);
         $('#navLists').trigger('click');
     });
-
-    //Preloader laten zien wanneer we gegevens uit onze api laden -- werkt nog niet!
-    $(document).ajaxStart(function(){
-        $('.container').hide();
-        $('#tabLoader').show();
-        //console.log("hoi");
-    });
-
-    $(document).ajaxComplete(function(){
-        $('#tabLoader').hide();
-        $('.container').show();
-        //console.log("hai");
-    });
 });
+
+//Lijst van filmen die vandaag uitkomen
+function showMoviesToday(){
+    //movielijst leeg maken
+    $('#collectionMovies').find('li').not(':first').remove();
+    $('.deleteFromLijst').hide();
+    $('.buttonMoreMovies').hide();
+
+    //filmen vinden
+    Movies.getDiscoverMovies('today', 0, 1, 0);
+    $('#tabMovieList').show();
+}
 
 function onDeviceReady() {
     console.log('Device is ready');
     //navigatie opendoen
     $('.spa').hide();
     $('#tabHome').show();
+    showMoviesToday();
     //preloader op hide
     $('#tabLoader').hide();
     //lijst met genres al klaar zetten

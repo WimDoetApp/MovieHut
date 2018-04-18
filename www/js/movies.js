@@ -32,6 +32,9 @@ var Movies = function(){
             case "genre":
                 filter = "sort_by=popularity.desc&with_genres=" + genreId;
                 break;
+            case "today":
+                filter = "&primary_release_date.gte=" + huidigeDatum.toISOString().slice(0,10) + "&primary_release_date.lte=" + huidigeDatum.toISOString().slice(0,10);
+                break;
             }
 
         //data ophalen
@@ -50,6 +53,10 @@ var Movies = function(){
                     var date = new Date(results[index]['release_date']);
                     var maand = maandNaam(date.getMonth());
                     rating = date.getDate() + " " + maand;
+                }
+
+                if(criteria === "today"){
+                    rating = results[index]['original_language'];
                 }
 
                 //teller weergaves omhoog (tellerWeergave geeft aan hoeveel films we op één pagina laten zien, we proberen dit altijd rond de 20 te houden)
@@ -232,7 +239,61 @@ var Movies = function(){
         });
     };
 
-    //personen in de film ophalen
+    //detail over een persoon
+    var getPerson = function (personId) {
+        var selectorOverview = $('#detailPeopleOverview');
+        var selector = $('#movieCollectionItem');
+        //data persoon ophalen
+        $.getJSON('https://api.themoviedb.org/3/person/' + personId + '?api_key=' + omdbKey, function(data){
+            //gegevens opvragen
+            var name = data['name'];
+            var birthday = data['birthday'];
+            var biography = data['biography'];
+            var hometown = data['place_of_birth'];
+            var image = "http://image.tmdb.org/t/p/w500/" + data['profile_path'];
+
+            //basis gegevens
+            selectorOverview.find('.titel').text(name);
+            selectorOverview.find('img').attr('src', image);
+            selectorOverview.find('.card-reveal').find('p').text(biography);
+            selectorOverview.find('.card-content').find('p:first').text("Born: " + birthday);
+            selectorOverview.find('.card-content').find('p:last').text("Born in: " + hometown);
+        });
+
+        //filmen ophalen
+        $.getJSON('https://api.themoviedb.org/3/person/' + personId + '/movie_credits?api_key=' + omdbKey, function(data){
+            var results = data["cast"];
+            console.log(data);
+            console.log(results);
+
+            //5 filmen ophalen
+            for (var i = 0; i < 5; i++) {
+                //gegevens opvragen
+                var id = results[i]['id'];
+                var titel = results[i]['title'];
+                var jaar = results[i]['release_date'].split('-')[0];
+                var character = results[i]['character'];
+                var image = "http://image.tmdb.org/t/p/w92/" + results[i]['poster_path'];
+
+                if (i !== 0){
+                    //element clonen
+                    var clone = selector.clone(true).prop('id', 'movieCollectionItem' + id);
+                    clone.appendTo('#collectionMovies');
+
+                    //selector aanpassen
+                    selector = $('#movieCollectionItem' + id);
+                }
+
+                //element vullen
+                selector.find('.title').text(titel);
+                selector.find('img').attr('src', image);
+                selector.find('p').html(jaar + "<br>" + "character: " + character);
+                selector.find('a').attr('data-id', id);
+            }
+        });
+    };
+
+        //personen in de film ophalen
     var getPeople = function(movieId){
         var selectorActor = $('#actorCollectionItem');
         var selectorCrew = $('#crewCollectionItem0');
@@ -364,6 +425,7 @@ var Movies = function(){
         searchPeople : searchPeople,
         getGenres : getGenres,
         getMovie : getMovie,
+        getPerson : getPerson,
         getPeople: getPeople,
         getMovieList : getMovieList,
         omdbKey : omdbKey

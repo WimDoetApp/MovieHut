@@ -58,6 +58,10 @@
     padding-right: 10px;
 }
 
+#homeLogo{
+    max-width: 70%;
+}
+
 /*Lijsten*/
 li.collectionLists {
     list-style-type: none;
