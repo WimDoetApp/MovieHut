@@ -1,4 +1,7 @@
 var Popup = function(){
+    /**
+     * @author Wim Naudts
+     */
     var movie = 0;
 
     //wat er gebeurt nadat op de knop geklikt is
@@ -45,7 +48,7 @@ var Popup = function(){
     var firstVisitPopup = function () {
         var options = {
             androidTheme: window.plugins.actionsheet.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
-            title: 'This app needs internet to function!',
+            title: 'This app needs an internet connection to function!',
             buttonLabels: ['Ok', "Don't show this again"],
             position: [20, 40], // for iPad pass in the [x, y] position of the popover
             destructiveButtonLast: true // you can choose where the destructive button is shown

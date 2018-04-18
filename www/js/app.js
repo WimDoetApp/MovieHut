@@ -1,4 +1,7 @@
 $(function(){
+    /**
+     * @author Wim Naudts
+     */
     //synchroon ajax gebruiken
     $.ajaxSetup({
         async: false

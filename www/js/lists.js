@@ -1,4 +1,7 @@
 var Lists = function(){
+    /**
+     * @author Wim Naudts
+     */
     //de variabelen in andere functies gebruiken (getters en setters)
     var getLists = function(){
         var lists = JSON.parse(localStorage.getItem('lists'));

@@ -1,4 +1,7 @@
 var Movies = function(){
+    /**
+     * @author Wim Naudts
+     */
     //api keys
     var omdbKey = '4013b0dfff09afbc472286202cf6fb79';
 
