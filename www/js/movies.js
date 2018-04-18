@@ -217,26 +217,37 @@ var Movies = function(){
             selectorOverview.find('.card-content').find('p:last').find('span').text(rating);
             $('#tabMovieDetail').attr('data-id', id);
 
-            //productie weergeven
-            $.each(production, function(index){
-                //gegevens opvragen
-                var name = production[index]['name'];
-                var id = production[index]['id'];
+            //productioncollection resetten
+            selectorProduction.show();
+            $('#productionCollection').find('p').remove();
 
-                //niet het eerste element --> eerste element klonen
-                if(index !== 0){
-                    //element clonen
-                    var clone = selectorProduction.clone(true).prop('id', 'productionCollectionItem' + index);
-                    clone.appendTo('#productionCollection');
-
-                    //selector aanpassen
-                    selectorProduction = $('#productionCollectionItem' + index);
-                }
-
+            //bij lege productie
+            if(production.length === 0){
                 //element opvullen
-                selectorProduction.text(name);
-                selectorProduction.attr('data-id', id);
-            });
+                selectorProduction.hide();
+                $('#productionCollection').append('<p>None</p>');
+            }else{
+                //productie weergeven
+                $.each(production, function(index){
+                    //gegevens opvragen
+                    var name = production[index]['name'];
+                    var id = production[index]['id'];
+
+                    //niet het eerste element --> eerste element klonen
+                    if(index !== 0){
+                        //element clonen
+                        var clone = selectorProduction.clone(true).prop('id', 'productionCollectionItem' + index);
+                        clone.appendTo('#productionCollection');
+
+                        //selector aanpassen
+                        selectorProduction = $('#productionCollectionItem' + index);
+                    }
+
+                    //element opvullen
+                    selectorProduction.text(name);
+                    selectorProduction.attr('data-id', id);
+                });
+            }
 
             //p element met genres leegmaken
             selectorOverview.find('.card-content').find('p:nth-child(2)').text("");
@@ -341,58 +352,78 @@ var Movies = function(){
             var crew = data['crew'];
             var tellerWeergave = 0; //om bij te houden hoeveel crewmembers we al weergeven
 
-            //we laten 5 acteurs en 5 crewmembers zien
-            for (i = 0; i < 5; i++) {
-                //gegevens opvragen
-                var character = cast[i]['character'];
-                var name = cast[i]['name'];
-                var id = cast[i]['id'];
+            //castCollection resetten
+            selectorActor.show();
+            $('#actorCollection').find('p').remove();
 
-                //niet het eerste element --> eerste element klonen
-                if (i !== 0){
-                    //element clonen
-                    var cloneActor = selectorActor.clone(true).prop('id', 'actorCollectionItem' + id);
-                    cloneActor.appendTo('#actorCollection');
-
-                    //selector aanpassen
-                    selectorActor = $('#actorCollectionItem' + id);
-                }
-
+            if(cast.length === 0){
                 //element opvullen
-                selectorActor.text(name + ' as ' + character);
-                selectorActor.attr('data-id', id);
+                selectorActor.hide();
+                $('#actorCollection').append('<p>None</p>');
+            }else{
+                //we laten 5 acteurs zien
+                for (i = 0; i < 5; i++) {
+                    //gegevens opvragen
+                    var character = cast[i]['character'];
+                    var name = cast[i]['name'];
+                    var id = cast[i]['id'];
+
+                    //niet het eerste element --> eerste element klonen
+                    if (i !== 0){
+                        //element clonen
+                        var cloneActor = selectorActor.clone(true).prop('id', 'actorCollectionItem' + id);
+                        cloneActor.appendTo('#actorCollection');
+
+                        //selector aanpassen
+                        selectorActor = $('#actorCollectionItem' + id);
+                    }
+
+                    //element opvullen
+                    selectorActor.text(name + ' as ' + character);
+                    selectorActor.attr('data-id', id);
+                }
             }
 
-            //door de lijst met alle crewmembers lopen
-            $.each(crew, function (index) {
-                //gegevens opvragen
-                var job = crew[index]['job'];
-                var department = crew[index]['department'];
-                var name = crew[index]['name'];
-                var id = crew[index]['id'];
-                var selectorHuidig;
+            //crewCollection resetten
+            $('#crewCollectionItem0').show();
+            $('#crewCollection').find('p').remove();
 
-                //we geven max. 5 crew weer
-                if(tellerWeergave < 5) {
-                    //De director(s) en een onbepaald aantal schrijvers of producers weergeven
-                    switch(department){
-                        case "Directing":
-                        case "Writing":
-                        case "Production":
-                            if(tellerWeergave !== 0){
-                                //element clonen
-                                var cloneCrew = selectorCrew.clone(true).prop('id', 'crewCollectionItem' + tellerWeergave);
-                                cloneCrew.appendTo('#crewCollection');
-                            }
-                            selectorHuidig = $('#crewCollectionItem' + tellerWeergave);
-                            //element opvullen
-                            selectorHuidig.text(job + ': ' + name);
-                            selectorHuidig.attr('data-id', id);
-                            tellerWeergave++;
-                            break;
+            if(crew.length === 0){
+                //element opvullen
+                $('#crewCollectionItem0').hide();
+                $('#crewCollection').append('<p>None</p>');
+            }else{
+                //door de lijst met alle crewmembers lopen
+                $.each(crew, function (index) {
+                    //gegevens opvragen
+                    var job = crew[index]['job'];
+                    var department = crew[index]['department'];
+                    var name = crew[index]['name'];
+                    var id = crew[index]['id'];
+                    var selectorHuidig;
+
+                    //we geven max. 5 crew weer
+                    if(tellerWeergave < 5) {
+                        //De director(s) en een onbepaald aantal schrijvers of producers weergeven
+                        switch(department){
+                            case "Directing":
+                            case "Writing":
+                            case "Production":
+                                if(tellerWeergave !== 0){
+                                    //element clonen
+                                    var cloneCrew = selectorCrew.clone(true).prop('id', 'crewCollectionItem' + tellerWeergave);
+                                    cloneCrew.appendTo('#crewCollection');
+                                }
+                                selectorHuidig = $('#crewCollectionItem' + tellerWeergave);
+                                //element opvullen
+                                selectorHuidig.text(job + ': ' + name);
+                                selectorHuidig.attr('data-id', id);
+                                tellerWeergave++;
+                                break;
+                        }
                     }
-                }
-            });
+                });
+            }
         });
     };
 

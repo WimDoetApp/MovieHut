@@ -219,7 +219,10 @@ $(function(){
         //veranderen van tab
         $('#tabPeopleDetail').show();
         $('#tabMovieList').show();
-        lastCall.push($(this))
+
+        if(!$(this).hasClass('lijst')){
+            lastCall.push($(this));
+        }
     });
 
     //bedrijf pagina
@@ -232,7 +235,6 @@ $(function(){
 
         //veranderen van tab
         changeTab($(this));
-        lastCall.push($(this));
     });
 
     //bepaalde film laten zien
