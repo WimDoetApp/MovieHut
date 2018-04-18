@@ -149,25 +149,36 @@ $(function(){
     $('.buttonSearch').click(function(){
         var criteria = $(this).attr('data-name');
         var searchName = $('#searchName').val();
+        var leeg = false;
 
-        //filmen zoeken
-        if(criteria === 'movies'){
-            $('#collectionMovies').find('li').not(':first').remove();
-            $('.buttonMoreMovies').hide();
-            $('.deleteFromLijst').hide();
+        //Als er geen invoer is, wordt er niet gezocht
+        if(searchName === ""){
+            alert('No input!');
+        }else {
+            //filmen zoeken
+            if(criteria === 'movies'){
+                $('#collectionMovies').find('li').not(':first').remove();
+                $('.buttonMoreMovies').hide();
+                $('.deleteFromLijst').hide();
 
-            Movies.searchMovie(searchName);
+                leeg = Movies.searchMovie(searchName);
+            }
+            //mensen zoeken
+            if(criteria === 'people'){
+                $('#collectionPersonen').find('li').not(':first').remove();
+
+                leeg = Movies.searchPeople(searchName);
+            }
+
+            //als er geen results zijn, laten we niks zien
+            if(leeg){
+                alert('Nothing found!');
+            }else{
+                //veranderen van tab
+                changeTab($(this));
+                lastCall.push($(this));
+            }
         }
-        //mensen zoeken
-        if(criteria === 'people'){
-            $('#collectionPersonen').find('li').not(':first').remove();
-
-            Movies.searchPeople(searchName);
-        }
-
-        //veranderen van tab
-        changeTab($(this));
-        lastCall.push($(this));
     });
 
     //lijst van genres weergeven
@@ -211,12 +222,26 @@ $(function(){
         lastCall.push($(this))
     });
 
+    //bedrijf pagina
+    $('.buttonProductionDetail').click(function(){
+        //movie id opvragen
+        var company = $(this).attr('data-id');
+
+        //film weergeven
+        Movies.getCompany(company);
+
+        //veranderen van tab
+        changeTab($(this));
+        lastCall.push($(this));
+    });
+
     //bepaalde film laten zien
     function showMovie(movieId){
         //lijsten leeg maken
         $('#actorCollection').find('a').not(':first').remove();
         $('#crewCollection').find('a').not(':first').remove();
         $('#movieCollection').find('a').not(':first').remove();
+        $('#productionCollection').find('a').not(':first').remove();
 
         //gegevens weergeven
         Movies.getMovie(movieId);

@@ -42,39 +42,42 @@ var Movies = function(){
             var results = data["results"];
             //door alle resultaten loopen
             $.each(results, function(index){
-                //gegevens opvragen
-                var id = results[index]['id'];
-                var titel = results[index]['title'];
-                var jaar = results[index]['release_date'].split('-')[0];
-                var rating = results[index]['vote_average'];
-                var image = "http://image.tmdb.org/t/p/w92/" + results[index]['poster_path'];
+                //Als we upcoming movies laten zien, laten we filmen die vandaag uitkomen niet zien
+                if(!(results[index]['release_date'] === huidigeDatum.toISOString().slice(0,10) && criteria === "upcoming")){
+                    //gegevens opvragen
+                    var id = results[index]['id'];
+                    var titel = results[index]['title'];
+                    var jaar = results[index]['release_date'].split('-')[0];
+                    var rating = results[index]['vote_average'];
+                    var image = "http://image.tmdb.org/t/p/w92/" + results[index]['poster_path'];
 
-                if(criteria === "upcoming"){
-                    var date = new Date(results[index]['release_date']);
-                    var maand = maandNaam(date.getMonth());
-                    rating = date.getDate() + " " + maand;
+                    if(criteria === "upcoming"){
+                        var date = new Date(results[index]['release_date']);
+                        var maand = maandNaam(date.getMonth());
+                        rating = date.getDate() + " " + maand;
+                    }
+
+                    if(criteria === "today"){
+                        rating = results[index]['original_language'];
+                    }
+
+                    //teller weergaves omhoog (tellerWeergave geeft aan hoeveel films we op één pagina laten zien, we proberen dit altijd rond de 20 te houden)
+                    tellerWeergave++;
+                    if (tellerWeergave !== 1){
+                        //element clonen
+                        var clone = selector.clone(true).prop('id', 'movieCollectionItem' + id);
+                        clone.appendTo('#collectionMovies');
+
+                        //selector aanpassen
+                        selector = $('#movieCollectionItem' + id);
+                    }
+
+                    //element vullen
+                    selector.find('.title').text(titel);
+                    selector.find('img').attr('src', image);
+                    selector.find('p').html(jaar + "<br>" + rating);
+                    selector.find('a').attr('data-id', id);
                 }
-
-                if(criteria === "today"){
-                    rating = results[index]['original_language'];
-                }
-
-                //teller weergaves omhoog (tellerWeergave geeft aan hoeveel films we op één pagina laten zien, we proberen dit altijd rond de 20 te houden)
-                tellerWeergave++;
-                if (tellerWeergave !== 1){
-                    //element clonen
-                    var clone = selector.clone(true).prop('id', 'movieCollectionItem' + id);
-                    clone.appendTo('#collectionMovies');
-
-                    //selector aanpassen
-                    selector = $('#movieCollectionItem' + id);
-                }
-
-                //element vullen
-                selector.find('.title').text(titel);
-                selector.find('img').attr('src', image);
-                selector.find('p').html(jaar + "<br>" + rating);
-                selector.find('a').attr('data-id', id);
             });
         });
 
@@ -85,10 +88,15 @@ var Movies = function(){
     var searchMovie = function(input){
         //variabelen
         var selector = $('#movieCollectionItem');
+        var leeg = false;
 
         //data ophalen
         $.getJSON('https://api.themoviedb.org/3/search/movie?api_key=' + omdbKey + '&language=en-US&query=' + input + '&page=1&include_adult=false', function(data) {
             var results = data["results"];
+            //als results leeg zijn sturen we true terug
+            if(results.length === 0){
+                leeg = true;
+            }
             //door alle resultaten loopen
             $.each(results, function(index){
                 //gegevens opvragen
@@ -114,15 +122,21 @@ var Movies = function(){
                 selector.find('a').attr('data-id', id);
             });
         });
+        return leeg;
     };
 
     //mensen zoeken op naam
     var searchPeople = function(input){
         //variabelen
         var selector = $('#personenCollectionItem');
+        var leeg = false;
 
         $.getJSON('https://api.themoviedb.org/3/search/person?api_key=' + omdbKey + '&language=en-US&query=' + input + '&page=1&include_adult=false', function(data) {
             var results = data["results"];
+            //als results leeg zijn sturen we true terug
+            if(results.length === 0){
+                leeg = true;
+            }
             //door alle resultaten loopen
             $.each(results, function(index){
                //gegevens opvragen
@@ -147,6 +161,7 @@ var Movies = function(){
                 selector.find('a').attr('data-id', id);
             });
         });
+        return leeg;
     };
 
     //genres ophalen
@@ -189,6 +204,10 @@ var Movies = function(){
             var production = data['production_companies'];
             var genres = data['genres'];
             var id = data['id'];
+
+            if(rating === 0){
+                rating = "No rating!";
+            }
 
             //basis gegevens
             selectorOverview.find('.titel').text(title);
@@ -293,7 +312,26 @@ var Movies = function(){
         });
     };
 
-        //personen in de film ophalen
+    //detail over een bedrijf
+    var getCompany = function(companyId){
+        var selectorOverview = $('#detailCompanyOverview');
+        //data bedrijf ophalen
+        $.getJSON('https://api.themoviedb.org/3/company/' + companyId + '?api_key=' + omdbKey, function(data){
+            //gegevens opvragen
+            var name = data['name'];
+            var headquarters = data['headquarters'];
+            var origin_country = data['origin_country'];
+            var image = "http://image.tmdb.org/t/p/w500/" + data['logo_path'];
+
+            //basis gegevens
+            selectorOverview.find('.titel').text(name);
+            selectorOverview.find('img').attr('src', image);
+            selectorOverview.find('.card-content').find('p:first').text("Based in: " + headquarters);
+            selectorOverview.find('.card-content').find('p:last').text(origin_country);
+        });
+    };
+
+    //personen in de film ophalen
     var getPeople = function(movieId){
         var selectorActor = $('#actorCollectionItem');
         var selectorCrew = $('#crewCollectionItem0');
@@ -426,6 +464,7 @@ var Movies = function(){
         getGenres : getGenres,
         getMovie : getMovie,
         getPerson : getPerson,
+        getCompany : getCompany,
         getPeople: getPeople,
         getMovieList : getMovieList,
         omdbKey : omdbKey
