@@ -318,6 +318,12 @@ $(function(){
         Lists.setLists(listName);
         $('#navLists').trigger('click');
     });
+
+    //film op google zoeken
+    $('.buttonGoogleSearch').click(function(){
+       var link = $(this).attr('data-show');
+       window.location.href=link.toString();
+    });
 });
 
 //Lijst van filmen die vandaag uitkomen

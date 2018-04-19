@@ -215,6 +215,7 @@ var Movies = function(){
             selectorOverview.find('.card-reveal').find('p').text(overview);
             selectorOverview.find('.card-content').find('p:first').text(releaseDate);
             selectorOverview.find('.card-content').find('p:last').find('span').text(rating);
+            $('.buttonGoogleSearch').attr('data-show', 'https://www.google.com/search?q=' + title + " movie");
             $('#tabMovieDetail').attr('data-id', id);
 
             //productioncollection resetten
