@@ -220,16 +220,12 @@ var Movies = function(){
             $('.buttonTwitterFeed').attr('data-name', title);
             $('#tabMovieDetail').attr('data-id', id);
 
-            //productioncollection resetten
-            selectorProduction.show();
-            $('#productionCollection').find('p').remove();
-
             //bij lege productie
             if(production.length === 0){
                 //element opvullen
-                selectorProduction.hide();
-                $('#productionCollection').append('<p>None</p>');
+                $('.productionTab').addClass('disabled');
             }else{
+                $('.productionTab').removeClass('disabled');
                 //productie weergeven
                 $.each(production, function(index){
                     //gegevens opvragen
@@ -363,11 +359,13 @@ var Movies = function(){
             //castCollection resetten
             selectorActor.show();
             $('#actorCollection').find('p').remove();
+            $('.crewTab').removeClass('disabled');
 
             if(cast.length === 0){
                 //element opvullen
                 selectorActor.hide();
                 $('#actorCollection').append('<p>None</p>');
+                $('.crewTab').addClass('disabled');
             }else{
                 //we laten 5 acteurs zien
                 for (i = 0; i < 5; i++) {
@@ -392,15 +390,11 @@ var Movies = function(){
                 }
             }
 
-            //crewCollection resetten
-            $('#crewCollectionItem0').show();
-            $('#crewCollection').find('p').remove();
-
             if(crew.length === 0){
                 //element opvullen
-                $('#crewCollectionItem0').hide();
-                $('#crewCollection').append('<p>None</p>');
+                $('.crewTab').addClass('disabled');
             }else{
+                $('.crewTab').removeClass('disabled');
                 //door de lijst met alle crewmembers lopen
                 $.each(crew, function (index) {
                     //gegevens opvragen

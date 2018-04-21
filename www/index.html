@@ -88,9 +88,9 @@
                     </ul>
                 </div>
                 <div class="card-content grey lighten-4">
-                    <div id="tabAPI">This app uses <a href="https://www.themoviedb.org/" target="_blank">The Movie Database's API</a></div>
+                    <div id="tabAPI">This app uses <a href="https://www.themoviedb.org/" target="_blank">The Movie Database's API</a> and the Twitter API. Backend courtesy of <a href="https://webtask.io/">webtask.io</a></div>
                     <div id="tabFramework"><a href="http://materializecss.com/" target="_blank">Materialize</a> is the CSS & javascript framework used for this APP</div>
-                    <div id="tabPlugins">This app uses the cordova plugin <a href="https://github.com/EddyVerbruggen/cordova-plugin-actionsheet" target="_blank">ActionSheet</a> by <a href="https://twitter.com/eddyverbruggen" target="_blank">Eddy Verbruggen</a></div>
+                    <div id="tabPlugins">This app uses the cordova plugin <a href="https://github.com/EddyVerbruggen/cordova-plugin-actionsheet" target="_blank">ActionSheet</a> by <a href="https://twitter.com/eddyverbruggen" target="_blank">Eddy Verbruggen</a>, on top of some of the official cordova plugins</div>
                 </div>
             </div>
         </div>
@@ -201,9 +201,9 @@
         <div class="card">
             <div class="card-tabs">
                 <ul class="tabs tabs-fixed-width">
-                    <li class="tab"><a href="#tabCrew">Crew</a></li>
-                    <li class="tab"><a class="active" href="#tabActors">Actors</a></li>
-                    <li class="tab"><a href="#tabProduction">Production</a></li>
+                    <li class="tab crewTab"><a href="#tabCrew">Crew</a></li>
+                    <li class="tab actorsTab"><a class="active" href="#tabActors">Actors</a></li>
+                    <li class="tab productionTab"><a href="#tabProduction">Production</a></li>
                 </ul>
             </div>
             <div class="card-content grey lighten-4">
@@ -276,7 +276,7 @@
 <!-- Cordova script -->
 <script src="cordova.js"></script>
 
-<!-- links in text zetten -->
+<!-- linkify plugin -->
 <script src="js/linkify/linkify.js"></script>
 <script src="js/linkify/linkify-string.js"></script>
 <script src="js/linkify/linkify-jquery.js"></script>

@@ -90,7 +90,9 @@ var Twitter = function () {
         var matches = text.match(/(^|\s)@[a-z]+/gi);
 
         $.each(matches, function(index){
-            var link = 'https://twitter.com/' + matches[index];
+            console.log(matches[index]);
+            var link = 'https://twitter.com/' + matches[index].replace(' @', "");
+            console.log(link);
 
             text = text.replace(matches[index], "<a href='" + link + "'>" + matches[index] + "</a>")
         });

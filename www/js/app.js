@@ -378,5 +378,13 @@ function onDeviceReady() {
     if(!Lists.getFirstVisit()){
         Popup.firstVisitPopup();
     }
+
+    //als er geen internet connectie is
+    var networkState = navigator.connection.type;
+
+    if(networkState === Connection.NONE){
+        alert('No connection! Please connect to the internet');
+    }
+
     //localStorage.clear();
 };
