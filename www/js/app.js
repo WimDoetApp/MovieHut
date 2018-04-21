@@ -1,7 +1,12 @@
+/**
+ * MovieHut: A Cordova android app
+ * Uses cordova-plugins: actionsheet, inappbrowser, connection
+ * Uses The Movie Database API and the Twitter API. Twitter API backend hosted on webtask.io
+ * Uses js plugin linkify
+ * @author Wim Naudts
+ */
+
 $(function(){
-    /**
-     * @author Wim Naudts
-     */
     //synchroon ajax gebruiken
     $.ajaxSetup({
         async: false
@@ -218,7 +223,6 @@ $(function(){
 
         //veranderen van tab
         $('#tabPeopleDetail').show();
-        $('#tabMovieList').show();
 
         if(!$(this).hasClass('lijst')){
             lastCall.push($(this));
@@ -321,8 +325,26 @@ $(function(){
 
     //film op google zoeken
     $('.buttonGoogleSearch').click(function(){
-       var link = $(this).attr('data-show');
-       window.location.href=link.toString();
+       var link = $(this).attr('data-link');
+       //window.location.href=link.toString();
+        window.open(link, '_blank', 'location=yes');
+    });
+
+    //twitter feed van de film
+    $('.buttonTwitterFeed').click(function(){
+        var isEmpty;
+
+        //twitter feed ophalen
+        var name = $(this).attr('data-name');
+        isEmpty = Twitter.movieFeed(name);
+
+        //als er geen tweets zijn
+        if(isEmpty){
+            alert('No tweets about this movie!');
+        }else{
+            //veranderen van tab
+            changeTab($(this));
+        }
     });
 });
 

@@ -215,7 +215,9 @@ var Movies = function(){
             selectorOverview.find('.card-reveal').find('p').text(overview);
             selectorOverview.find('.card-content').find('p:first').text(releaseDate);
             selectorOverview.find('.card-content').find('p:last').find('span').text(rating);
-            $('.buttonGoogleSearch').attr('data-show', 'https://www.google.com/search?q=' + title + " movie");
+            $('.twitter-timeline').attr('href', 'https://twitter.com/hashtag/' + title.replace(/\s/g, ''));
+            $('.buttonGoogleSearch').attr('data-link', 'https://www.google.com/search?q=' + title + " movie");
+            $('.buttonTwitterFeed').attr('data-name', title);
             $('#tabMovieDetail').attr('data-id', id);
 
             //productioncollection resetten
@@ -294,32 +296,37 @@ var Movies = function(){
         //filmen ophalen
         $.getJSON('https://api.themoviedb.org/3/person/' + personId + '/movie_credits?api_key=' + omdbKey, function(data){
             var results = data["cast"];
-            console.log(data);
-            console.log(results);
 
-            //5 filmen ophalen
-            for (var i = 0; i < 5; i++) {
-                //gegevens opvragen
-                var id = results[i]['id'];
-                var titel = results[i]['title'];
-                var jaar = results[i]['release_date'].split('-')[0];
-                var character = results[i]['character'];
-                var image = "http://image.tmdb.org/t/p/w92/" + results[i]['poster_path'];
+            //Als er filmen zijn
+            if(results.length !== 0){
+                //5 filmen ophalen
+                for (var i = 0; i < 5; i++) {
+                    $('#knownFor').show();
+                    $('#tabMovieList').show();
+                    //gegevens opvragen
+                    var id = results[i]['id'];
+                    var titel = results[i]['title'];
+                    var jaar = results[i]['release_date'].split('-')[0];
+                    var character = results[i]['character'];
+                    var image = "http://image.tmdb.org/t/p/w92/" + results[i]['poster_path'];
 
-                if (i !== 0){
-                    //element clonen
-                    var clone = selector.clone(true).prop('id', 'movieCollectionItem' + id);
-                    clone.appendTo('#collectionMovies');
+                    if (i !== 0){
+                        //element clonen
+                        var clone = selector.clone(true).prop('id', 'movieCollectionItem' + id);
+                        clone.appendTo('#collectionMovies');
 
-                    //selector aanpassen
-                    selector = $('#movieCollectionItem' + id);
+                        //selector aanpassen
+                        selector = $('#movieCollectionItem' + id);
+                    }
+
+                    //element vullen
+                    selector.find('.title').text(titel);
+                    selector.find('img').attr('src', image);
+                    selector.find('p').html(jaar + "<br>" + "character: " + character);
+                    selector.find('a').attr('data-id', id);
                 }
-
-                //element vullen
-                selector.find('.title').text(titel);
-                selector.find('img').attr('src', image);
-                selector.find('p').html(jaar + "<br>" + "character: " + character);
-                selector.find('a').attr('data-id', id);
+            }else{ //als er geen filmen zijn
+                $('#knownFor').hide();
             }
         });
     };

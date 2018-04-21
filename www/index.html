@@ -65,8 +65,8 @@
                         <li>phone: +32 472 28 56 96</li>
                     </ul>
                     <p>
-                        <a href="https://www.linkedin.com/in/wim-naudts-83704311b/" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                        <a href="https://twitter.com/wimnaudts" target="_blank"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
+                        <a href="https://www.linkedin.com/in/wim-naudts-83704311b/" target="_blank"><i class="fa fa-linkedin infoIcon infoLinkedIn" aria-hidden="true"></i></a>
+                        <a href="https://twitter.com/wimnaudts" target="_blank"><i class="fa fa-twitter-square infoIcon infoTwitter" aria-hidden="true"></i></a>
                     </p>
                 </div>
                 <div class="card-action">
@@ -144,7 +144,7 @@
                 <p></p>
             </div>
         </div>
-        <h4>Known for:</h4>
+        <h4 id="knownFor">Known for:</h4>
     </div>
 
     <!-- Tab met lijst van filmen -->
@@ -226,8 +226,9 @@
         </div>
 
         <p class="center-align">
-            <a class="waves-effect waves-light btn-large col s6 offset-s3" id="buttonAddToList"><i class="material-icons left">playlist_add</i>Add to list</a>
-            <a class="waves-effect waves-light btn-large buttonGoogleSearch" data-show=""><i class="material-icons left">search</i>Google search</a>
+            <a class="waves-effect waves-light btn-large" id="buttonAddToList"><i class="material-icons left">playlist_add</i>Add to list</a>
+            <a class="waves-effect waves-light btn-large buttonGoogleSearch" data-link=""><i class="material-icons left">search</i>Google search</a>
+            <a class="waves-effect waves-light btn-large buttonTwitterFeed" data-name="" data-show="tabTwitter"><i class="fa fa-twitter-square left"></i>Twitter feed</a>
         </p>
     </div>
 
@@ -247,12 +248,44 @@
         </div>
         <a class="waves-effect waves-light btn-large col s6 offset-s3" id="buttonAddList"><i class="material-icons left">library_add</i>Add list</a>
     </div>
+
+    <!-- Twitter feed -->
+    <div class="row spa" id="tabTwitter">
+        <div class="col s12 m7" id="twitterFeed">
+            <h3></h3>
+            <div class="card horizontal tweetKaart" id="tweet">
+                <div class="card-stacked">
+                    <div class="card-content">
+                        <img src="" class="left twitterFoto">
+                        <h5><a href=""></a></h5>
+                        <p><i></i></p>
+                        <p class="text"></p>
+                        <p><i></i></p>
+                        <img src="" class="responsive-img media"/>
+                    </div>
+                    <div class="card-action">
+                        <a href="#">Twitter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 
+<!-- Cordova script -->
 <script src="cordova.js"></script>
+
+<!-- links in text zetten -->
+<script src="js/linkify/linkify.js"></script>
+<script src="js/linkify/linkify-string.js"></script>
+<script src="js/linkify/linkify-jquery.js"></script>
+
+<!-- Eigen scripts -->
 <script defer src="js/app.js"></script>
 <script defer src="js/movies.js"></script>
 <script defer src="js/popup.js"></script>
 <script defer src="js/lists.js"></script>
+<script defer src="js/twitter.js"></script>
 </body>
 </html>

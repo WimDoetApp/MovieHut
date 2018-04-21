@@ -2,17 +2,17 @@
 .spa { display: none; }
 
 /*icons*/
-.fa{
+.infoIcon{
     font-size: 200%;
     padding: 2%;
 }
 
-.fa-linkedin{
+.infoLinkedIn{
     color: #1dcaff;
     text-shadow: 1px 1px black;
 }
 
-.fa-twitter-square{
+.infoTwitter{
     color: #00aced;
     text-shadow: 1px 1px black;
 }
@@ -69,4 +69,10 @@ li.collectionLists {
 
 .buttonSpecificMovieList{
     color: #26a69a !important;
+}
+
+/*twitter user foto*/
+.twitterFoto{
+    margin-right: 2px;
+    border-radius: 50%;
 }
