@@ -108,7 +108,10 @@
         </div>
         <div class="col s12 m7">
             <h4>Search by name:</h4>
-            <input type="text" name="searchName" id="searchName" placeholder="name">
+            <div class="input-field">
+                <input type="text" name="searchName" id="searchName">
+                <label for="searchName">name</label>
+            </div>
             <a href="#!" class="waves-effect waves-light btn col s10 offset-s1 buttonSearch" data-name="movies" data-show="tabMovieList">Search for movies</a>
             <a href="#!" class="waves-effect waves-light btn col s10 offset-s1 buttonSearch" data-name="people" data-show="tabPersonenList">Search for people</a>
         </div>
@@ -245,7 +248,7 @@
         <h4>Add a list</h4>
         <div class="input-field col s12">
             <label for="listName">list name</label>
-            <input type="text" name="listName" id="listName" placeholder="list name">
+            <input type="text" name="listName" id="listName">
         </div>
         <a class="waves-effect waves-light btn-large col s6 offset-s3" id="buttonAddList"><i class="material-icons left">library_add</i>Add list</a>
     </div>
