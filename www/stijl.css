@@ -17,6 +17,10 @@
     text-shadow: 1px 1px black;
 }
 
+.infoGithub{
+    color: white;
+}
+
 .inline-icon {
     vertical-align: bottom;
     font-size: 20px !important;
