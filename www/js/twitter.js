@@ -75,7 +75,7 @@ var Twitter = function () {
     };
 
     var replaceHashtag = function(text){
-        var matches = text.match(/(^|\s)#[a-z]+/gi);
+        var matches = text.match(/(^|)#[a-z'-_à-ÿ]+/gi);
 
         $.each(matches, function(index){
             var link = 'https://twitter.com/search?q=' + matches[index].replace('#', "%23");
@@ -87,11 +87,11 @@ var Twitter = function () {
     };
 
     var replaceUser = function(text){
-        var matches = text.match(/(^|\s)@[a-z]+/gi);
+        var matches = text.match(/(^|)@[a-z'-_à-ÿ]+/gi);
 
         $.each(matches, function(index){
             console.log(matches[index]);
-            var link = 'https://twitter.com/' + matches[index].replace(' @', "");
+            var link = 'https://twitter.com/' + matches[index].replace(':', "");
             console.log(link);
 
             text = text.replace(matches[index], "<a href='" + link + "'>" + matches[index] + "</a>")

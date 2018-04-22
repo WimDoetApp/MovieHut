@@ -319,8 +319,14 @@ $(function(){
     //lijst toevoegen
     $('#buttonAddList').click(function(){
         var listName = $('#listName').val();
-        Lists.setLists(listName);
-        $('#navLists').trigger('click');
+
+        //invoercontrole
+        if(listName !== ""){
+            Lists.setLists(listName);
+            $('#navLists').trigger('click');
+        }else{
+            alert("List name can't be empty!");
+        }
     });
 
     //film op google zoeken
